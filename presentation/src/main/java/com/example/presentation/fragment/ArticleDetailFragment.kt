@@ -9,15 +9,15 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
-import com.example.presentation.const.Const
+import com.example.util.const.Const
 import com.example.presentation.databinding.FragmentArticleDetailBinding
-import com.example.presentation.model.Article
-import com.example.presentation.repository.TopNewsRepository
-import com.example.presentation.repository.TopNewsRepositoryImpl
-import com.example.presentation.retrofit.RetrofitHelper
-import com.example.presentation.room.LocalDataBase
-import com.example.presentation.source.local.SavedNewsLocalDataSourceImpl
-import com.example.presentation.source.remote.TopNewsRemoteDataSourceImpl
+import com.example.data.model.Article
+import com.example.data.repository.news.TopNewsRepository
+import com.example.data.repository.news.TopNewsRepositoryImpl
+import com.example.remote.retrofit.RetrofitHelper
+import com.example.local.room.LocalDataBase
+import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
+import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.presentation.util.Util.checkTimePassed
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -49,13 +49,13 @@ class ArticleDetailFragment :
     //enter animation을 실행하여서  이렇게 예외처리 해줌.
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         return if ((enter && arguments?.getBoolean(
-                Const.PARAM_SCREEN_INITIALIZED,
+                com.example.util.const.Const.PARAM_SCREEN_INITIALIZED,
                 false
             ) == true)
         ) {
             AnimationUtils.loadAnimation(context, R.anim.stationary)
         } else {
-            arguments?.putBoolean(Const.PARAM_SCREEN_INITIALIZED, true)
+            arguments?.putBoolean(com.example.util.const.Const.PARAM_SCREEN_INITIALIZED, true)
             null
         }
     }
@@ -63,7 +63,7 @@ class ArticleDetailFragment :
     private fun initSet() {
 
         //article 데이터 넘겨 받음.
-        article = arguments?.getParcelable(Const.PARAM_ARTICLE_MODEL)
+        article = arguments?.getParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL)
 
         navHost =
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

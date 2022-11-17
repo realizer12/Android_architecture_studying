@@ -42,6 +42,13 @@ android {
 
 dependencies {
 
+    //모듈 의존성 주입
+    implementation project(':remote')
+    implementation project(':local')
+    implementation project(':data')
+    implementation project(':util')
+
+
     //jetpack navigation
     def nav_version = "2.5.2"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -49,21 +56,6 @@ dependencies {
 
     def timber_version = "5.0.1"
     implementation "com.jakewharton.timber:timber:$timber_version"
-
-    def room_version = "2.4.3"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-rxjava3:$room_version"
-
-
-
-    def retrofit_version = "2.9.0"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofit_version"
-
-    def okhttp_version = "4.9.3"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
 
     //Rxjava 추가

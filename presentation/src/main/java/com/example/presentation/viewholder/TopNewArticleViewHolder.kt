@@ -3,9 +3,8 @@ package com.example.presentation.viewholder
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.presentation.databinding.ItemNewsListBinding
-import com.example.presentation.model.Article
+import com.example.data.model.Article
 import com.example.presentation.util.Util.checkTimePassed
-import timber.log.Timber
 
 class TopNewArticleViewHolder(
     val binding:ItemNewsListBinding

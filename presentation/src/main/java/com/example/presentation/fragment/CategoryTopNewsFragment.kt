@@ -13,23 +13,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.presentation.R
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
-import com.example.presentation.const.Const
+import com.example.util.const.Const
 import com.example.presentation.databinding.FragmentTopNewsBinding
-import com.example.presentation.model.Article
-import com.example.presentation.model.BaseDataModel
-import com.example.presentation.repository.TopNewsRepository
-import com.example.presentation.repository.TopNewsRepositoryImpl
-import com.example.presentation.retrofit.RetrofitHelper
-import com.example.presentation.room.LocalDataBase
-import com.example.presentation.source.local.SavedNewsLocalDataSourceImpl
-import com.example.presentation.source.remote.TopNewsRemoteDataSourceImpl
+import com.example.data.model.Article
+import com.example.data.repository.news.TopNewsRepository
+import com.example.data.repository.news.TopNewsRepositoryImpl
+import com.example.remote.retrofit.RetrofitHelper
+import com.example.local.room.LocalDataBase
+import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
+import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.presentation.util.Util.navigateWithAnim
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import timber.log.Timber
 
 class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_top_news) {
 
@@ -61,10 +56,10 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
     //그외에는 stationay를 주어 enteranimation을 없애준다.-> 계속 메인 탭 이동시  이미 navigate된 fragment가 기존 설정한
     //enter animation을 실행하여서  이렇게 예외처리 해줌.
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-        return if ((enter && arguments?.getBoolean(Const.PARAM_SCREEN_INITIALIZED,false) == true)) {
+        return if ((enter && arguments?.getBoolean(com.example.util.const.Const.PARAM_SCREEN_INITIALIZED,false) == true)) {
             AnimationUtils.loadAnimation(context, R.anim.stationary)
         } else {
-            arguments?.putBoolean(Const.PARAM_SCREEN_INITIALIZED,true)
+            arguments?.putBoolean(com.example.util.const.Const.PARAM_SCREEN_INITIALIZED,true)
             null
         }
     }
@@ -75,7 +70,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
             TopNewsListAdapter.ItemClickListener {
             override fun onTopNewItemClick(article: Article) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
-                    putParcelable(Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
+                    putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
                 })
             }
         })
@@ -118,7 +113,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
 
     private fun initSet(){
 
-        categoryString = arguments?.getString(Const.PARAM_ARTICLE_CATEGORY)?:""
+        categoryString = arguments?.getString(com.example.util.const.Const.PARAM_ARTICLE_CATEGORY)?:""
 
         setToolbar()
 
@@ -168,7 +163,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
         if (totalResult != TopNewsFragment.DEFAULT_LIST_SIZE && totalResult <= topNewsListAdapter.currentList.size) {
             return
         }
-        topNewsRepository.getTopHeadLines(page = page, pageSize = Const.PageSize, category = categoryString)
+        topNewsRepository.getTopHeadLines(page = page, pageSize = com.example.util.const.Const.PageSize, category = categoryString)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

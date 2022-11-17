@@ -12,24 +12,18 @@ import com.example.presentation.R
 import com.example.presentation.activity.SplashActivity
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
-import com.example.presentation.const.Const
 import com.example.presentation.databinding.FragmentTopNewsBinding
-import com.example.presentation.fragment.CategoryTopNewsFragment.Companion.DEFAULT_LIST_SIZE
-import com.example.presentation.model.Article
-import com.example.presentation.model.BaseDataModel
-import com.example.presentation.repository.TopNewsRepository
-import com.example.presentation.repository.TopNewsRepositoryImpl
-import com.example.presentation.retrofit.RetrofitHelper
-import com.example.presentation.room.LocalDataBase
-import com.example.presentation.source.local.SavedNewsLocalDataSourceImpl
-import com.example.presentation.source.remote.TopNewsRemoteDataSourceImpl
-import com.example.presentation.util.PreferenceManager
+import com.example.data.model.Article
+import com.example.data.repository.news.TopNewsRepository
+import com.example.data.repository.news.TopNewsRepositoryImpl
+import com.example.remote.retrofit.RetrofitHelper
+import com.example.local.room.LocalDataBase
+import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
+import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
+import com.example.local.PreferenceManager
 import com.example.presentation.util.Util.navigateWithAnim
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_top_news) {
 
@@ -85,7 +79,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
             TopNewsListAdapter.ItemClickListener {
             override fun onTopNewItemClick(article: Article) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
-                    putParcelable(Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
+                    putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
                 })
             }
         })
@@ -141,7 +135,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
             return
         }
 
-        topNewsRepository.getTopHeadLines(page = page, pageSize = Const.PageSize)
+        topNewsRepository.getTopHeadLines(page = page, pageSize = com.example.util.const.Const.PageSize)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

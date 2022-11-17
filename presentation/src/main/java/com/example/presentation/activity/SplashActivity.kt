@@ -5,15 +5,14 @@ import android.os.Looper
 import android.os.Handler
 import com.example.presentation.R
 import com.example.presentation.base.BaseActivity
-import com.example.presentation.const.Const
 import com.example.presentation.databinding.ActivitySplashBinding
-import com.example.presentation.util.PreferenceManager
+import com.example.local.PreferenceManager
 
 class SplashActivity:BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {
     override fun ActivitySplashBinding.onCreate() {
 
         val isUserAlreadyLogined = PreferenceManager.getPreference(this@SplashActivity,
-            Const.PARAM_IS_LOGIN_SUCCESS,false) as Boolean
+            com.example.util.const.Const.PARAM_IS_LOGIN_SUCCESS,false) as Boolean
 
         Handler(Looper.getMainLooper()).postDelayed({
             if(isUserAlreadyLogined){

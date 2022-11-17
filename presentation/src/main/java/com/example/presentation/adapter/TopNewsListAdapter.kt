@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.presentation.R
 import com.example.presentation.databinding.ItemNewsListBinding
-import com.example.presentation.model.Article
+import com.example.data.model.Article
 import com.example.presentation.viewholder.TopNewArticleViewHolder
 
 class TopNewsListAdapter:ListAdapter<Article, TopNewArticleViewHolder>(diffUtil) {
