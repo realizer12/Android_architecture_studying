@@ -1,14 +1,13 @@
-package com.example.data.model
+package com.example.remote.model
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
+/**
+ * remote 모듈용 article model
+ **/
 @Parcelize
-data class ArticleDataModel(
+data class ArticleRemoteDataModel(
     val author: String? = null,
     val content: String? = null,
     val description: String? = null,
@@ -16,4 +15,4 @@ data class ArticleDataModel(
     val title: String? = null,
     val url: String? = null,
     val urlToImage: String? = null,
-): Parcelable
+) : Parcelable

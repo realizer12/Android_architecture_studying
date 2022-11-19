@@ -1,5 +1,6 @@
 package com.example.data.repository.news
 
+import com.example.data.mapper.ArticleListDataMapper
 import com.example.data.model.ArticleDataModel
 import com.example.data.source.local.news.SavedNewsLocalDataSource
 import com.example.data.source.remote.news.TopNewsRemoteDataSource
@@ -9,8 +10,7 @@ import io.reactivex.rxjava3.core.Single
 class TopNewsRepositoryImpl(
     private val topNewsRemoteDataSource: TopNewsRemoteDataSource,
     private val savedNewsLocalDataSource: SavedNewsLocalDataSource
-) :
-    TopNewsRepository {
+) : TopNewsRepository {
     override fun getTopHeadLines(
         category: String?,
         page: Int,

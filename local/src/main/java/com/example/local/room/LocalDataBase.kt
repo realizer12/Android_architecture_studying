@@ -6,10 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.data.model.ArticleDataModel
 import com.example.local.PreferenceManager
+import com.example.local.model.ArticleLocalDataModel
 import com.example.util.const.Const
 
 @Database(
-    entities = [ArticleDataModel::class],
+    entities = [ArticleLocalDataModel::class],
     version = 5,
     exportSchema = false
 )

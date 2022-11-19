@@ -1,14 +1,13 @@
-package com.example.data.model
+package com.example.presentation.model
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
+/**
+ * presentation 모듈용  article data model
+**/
 @Parcelize
-data class ArticleDataModel(
+data class ArticlePresentationDataModel(
     val author: String? = null,
     val content: String? = null,
     val description: String? = null,
