@@ -1,6 +1,6 @@
 package com.example.data.repository.news
 
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import com.example.data.source.local.news.SavedNewsLocalDataSource
 import com.example.data.source.remote.news.TopNewsRemoteDataSource
 import io.reactivex.rxjava3.core.Completable
@@ -15,7 +15,7 @@ class TopNewsRepositoryImpl(
         category: String?,
         page: Int,
         pageSize: Int
-    ): Single<List<Article>> {
+    ): Single<List<ArticleDataModel>> {
         return topNewsRemoteDataSource.getTopHeadLines(category, page, pageSize).map {
             if (it.status == "ok") {
                 it.articles ?: emptyList()
@@ -25,15 +25,15 @@ class TopNewsRepositoryImpl(
         }
     }
 
-    override fun getSavedArticleList(): Single<List<Article>> {
+    override fun getSavedArticleList(): Single<List<ArticleDataModel>> {
         return savedNewsLocalDataSource.getSavedArticleList()
     }
 
-    override fun saveArticle(article: Article): Completable {
+    override fun saveArticle(article: ArticleDataModel): Completable {
         return savedNewsLocalDataSource.saveArticle(article)
     }
 
-    override fun removeArticle(article: Article): Completable {
+    override fun removeArticle(article: ArticleDataModel): Completable {
         return savedNewsLocalDataSource.removeArticle(article)
     }
 }

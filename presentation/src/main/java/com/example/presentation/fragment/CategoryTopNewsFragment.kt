@@ -13,9 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.presentation.R
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
-import com.example.util.const.Const
 import com.example.presentation.databinding.FragmentTopNewsBinding
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import com.example.data.repository.news.TopNewsRepository
 import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.remote.retrofit.RetrofitHelper
@@ -35,7 +34,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
     private var page = 1
     private var rcyScrollLState: Parcelable? = null
     lateinit var topNewsListAdapter: TopNewsListAdapter
-    private val topNewsList = mutableListOf<Article>()
+    private val topNewsList = mutableListOf<ArticleDataModel>()
     private var isAlreadyInitialized = false
     private var categoryString  = ""
 
@@ -68,7 +67,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
     private fun setListenerEvent() {
         topNewsListAdapter.setOnTopNewsItemClickListener(object :
             TopNewsListAdapter.ItemClickListener {
-            override fun onTopNewItemClick(article: Article) {
+            override fun onTopNewItemClick(article: ArticleDataModel) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
                     putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
                 })
@@ -133,7 +132,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
         if(!isAlreadyInitialized){
             isAlreadyInitialized = true
             arguments?.apply {
-                getParcelableArrayList<Article>(ARTICLE_LIST)?.toMutableList()
+                getParcelableArrayList<ArticleDataModel>(ARTICLE_LIST)?.toMutableList()
                     ?.let {
                         topNewsList.addAll(it)
                     }

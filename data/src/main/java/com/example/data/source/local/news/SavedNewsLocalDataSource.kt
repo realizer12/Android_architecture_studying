@@ -1,6 +1,6 @@
 package com.example.data.source.local.news
 
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
@@ -16,7 +16,7 @@ import io.reactivex.rxjava3.core.Single
  *
  * **/
 interface SavedNewsLocalDataSource {
-    fun getSavedArticleList(): Single<List<Article>>
-    fun saveArticle(article: Article): Completable
-    fun removeArticle(article: Article): Completable
+    fun getSavedArticleList(): Single<List<ArticleDataModel>>
+    fun saveArticle(article: ArticleDataModel): Completable
+    fun removeArticle(article: ArticleDataModel): Completable
 }

@@ -9,9 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.presentation.R
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
-import com.example.util.const.Const
 import com.example.presentation.databinding.FragmentSavedBinding
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import com.example.data.repository.news.TopNewsRepository
 import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.remote.retrofit.RetrofitHelper
@@ -71,7 +70,7 @@ class SavedFragment:BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) 
     private fun setListenerEvent() {
         topNewsListAdapter.setOnTopNewsItemClickListener(object :
             TopNewsListAdapter.ItemClickListener {
-            override fun onTopNewItemClick(article: Article) {
+            override fun onTopNewItemClick(article: ArticleDataModel) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
                     putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
                 })

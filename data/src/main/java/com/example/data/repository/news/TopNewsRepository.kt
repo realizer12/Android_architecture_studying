@@ -1,6 +1,6 @@
 package com.example.data.repository.news
 
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
@@ -20,10 +20,10 @@ interface TopNewsRepository {
         category: String? = null,//optional
         page:Int,
         pageSize:Int
-    ): Single<List<Article>>
+    ): Single<List<ArticleDataModel>>
 
-    fun getSavedArticleList():Single<List<Article>>
+    fun getSavedArticleList():Single<List<ArticleDataModel>>
 
-    fun saveArticle(article: Article):Completable
-    fun removeArticle(article: Article):Completable
+    fun saveArticle(article: ArticleDataModel):Completable
+    fun removeArticle(article: ArticleDataModel):Completable
 }

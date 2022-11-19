@@ -1,6 +1,6 @@
 package com.example.remote.retrofit
 
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import com.example.data.model.BaseDataModel
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
@@ -15,6 +15,6 @@ interface ApiService {
         @Query("category") category: String? = null,//optional
         @Query("page") page:Int,
         @Query("pageSize")pageSize:Int
-    ): Single<BaseDataModel<Article>>
+    ): Single<BaseDataModel<ArticleDataModel>>
 
 }

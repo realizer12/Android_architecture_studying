@@ -1,6 +1,6 @@
 package com.example.data.source.remote.news
 
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import com.example.data.model.BaseDataModel
 import io.reactivex.rxjava3.core.Single
 
@@ -11,5 +11,5 @@ interface TopNewsRemoteDataSource {
         category: String? = null,//optional
         page: Int,
         pageSize: Int
-    ): Single<BaseDataModel<Article>>
+    ): Single<BaseDataModel<ArticleDataModel>>
 }

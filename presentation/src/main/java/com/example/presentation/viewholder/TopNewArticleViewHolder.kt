@@ -3,13 +3,13 @@ package com.example.presentation.viewholder
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.presentation.databinding.ItemNewsListBinding
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import com.example.presentation.util.Util.checkTimePassed
 
 class TopNewArticleViewHolder(
     val binding:ItemNewsListBinding
 ):RecyclerView.ViewHolder(binding.root) {
-    fun bind(article: Article){
+    fun bind(article: ArticleDataModel){
         //썸네일 이미지 적용
         Glide.with(itemView.context)
             .load(article.urlToImage)

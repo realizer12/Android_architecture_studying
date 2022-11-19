@@ -9,9 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
-import com.example.util.const.Const
 import com.example.presentation.databinding.FragmentArticleDetailBinding
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import com.example.data.repository.news.TopNewsRepository
 import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.remote.retrofit.RetrofitHelper
@@ -25,7 +24,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class ArticleDetailFragment :
     BaseFragment<FragmentArticleDetailBinding>(R.layout.fragment_article_detail) {
 
-    private var article: Article? = null
+    private var article: ArticleDataModel? = null
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController

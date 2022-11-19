@@ -13,7 +13,7 @@ import com.example.presentation.activity.SplashActivity
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentTopNewsBinding
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import com.example.data.repository.news.TopNewsRepository
 import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.remote.retrofit.RetrofitHelper
@@ -32,7 +32,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     private var page = 1
     private var rcyScrollLState: Parcelable? = null
     private var isAlreadyInitialized = false
-    private val topNewsList = mutableListOf<Article>()
+    private val topNewsList = mutableListOf<ArticleDataModel>()
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
@@ -77,7 +77,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     private fun setListenerEvent() {
         topNewsListAdapter.setOnTopNewsItemClickListener(object :
             TopNewsListAdapter.ItemClickListener {
-            override fun onTopNewItemClick(article: Article) {
+            override fun onTopNewItemClick(article: ArticleDataModel) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
                     putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
                 })

@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.presentation.R
 import com.example.presentation.databinding.ItemNewsListBinding
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import com.example.presentation.viewholder.TopNewArticleViewHolder
 
-class TopNewsListAdapter:ListAdapter<Article, TopNewArticleViewHolder>(diffUtil) {
+class TopNewsListAdapter:ListAdapter<ArticleDataModel, TopNewArticleViewHolder>(diffUtil) {
 
     lateinit var itemClickListener: ItemClickListener
 
@@ -30,7 +30,7 @@ class TopNewsListAdapter:ListAdapter<Article, TopNewArticleViewHolder>(diffUtil)
 
     //아이템 클릭
     interface ItemClickListener{
-        fun onTopNewItemClick(article: Article)//뉴스 기사 클릭시
+        fun onTopNewItemClick(article: ArticleDataModel)//뉴스 기사 클릭시
     }
 
     fun setOnTopNewsItemClickListener(itemClickListener: ItemClickListener){
@@ -47,18 +47,18 @@ class TopNewsListAdapter:ListAdapter<Article, TopNewArticleViewHolder>(diffUtil)
     override fun getItemCount() = currentList.size
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Article>() {
+        val diffUtil = object : DiffUtil.ItemCallback<ArticleDataModel>() {
 
             override fun areItemsTheSame(
-                oldItem: Article,
-                newItem: Article
+                oldItem: ArticleDataModel,
+                newItem: ArticleDataModel
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: Article,
-                newItem: Article
+                oldItem: ArticleDataModel,
+                newItem: ArticleDataModel
             ): Boolean {
                 return oldItem == newItem
             }

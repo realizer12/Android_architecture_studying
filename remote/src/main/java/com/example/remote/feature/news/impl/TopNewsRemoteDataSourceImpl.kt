@@ -1,6 +1,6 @@
 package com.example.remote.feature.news.impl
 
-import com.example.data.model.Article
+import com.example.data.model.ArticleDataModel
 import com.example.data.model.BaseDataModel
 import com.example.data.source.remote.news.TopNewsRemoteDataSource
 import com.example.remote.retrofit.RetrofitHelper
@@ -15,7 +15,7 @@ class TopNewsRemoteDataSourceImpl(private val retrofitHelper: RetrofitHelper) :
         category: String?,
         page: Int,
         pageSize: Int
-    ): Single<BaseDataModel<Article>> {
+    ): Single<BaseDataModel<ArticleDataModel>> {
         return retrofitHelper.apiService.getTopHeadLines(
             page = page,
             category = category,

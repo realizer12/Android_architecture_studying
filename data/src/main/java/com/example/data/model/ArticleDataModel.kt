@@ -13,7 +13,7 @@ import kotlinx.parcelize.Parcelize
 )
 //뉴스 기사용 데이터 모델
 @Parcelize
-data class Article(
+data class ArticleDataModel(
     @PrimaryKey(autoGenerate = true) var uid: Long,
     @ColumnInfo(name = "author") val author: String? = "",
     @ColumnInfo(name = "content") val content: String? = "",
