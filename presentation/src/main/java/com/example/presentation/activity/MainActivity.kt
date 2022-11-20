@@ -17,6 +17,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         setBottomNavigation()
     }
 
+    override fun onBackPressed() {
+        if(isNavigationHasBackStack()){
+            navController.popBackStack()
+        }else{
+            if (navController.currentDestination?.id != R.id.topNewsFragment) {
+                binding.bnMenu.selectedItemId = R.id.main_top_news_nav_graph
+            } else {
+                super.onBackPressed()
+            }
+        }
+    }
+
 
     //바텀 메뉴 세팅
     private fun setBottomNavigation(){
@@ -26,4 +38,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
 
+    private fun isNavigationHasBackStack(): Boolean {
+
+        //현재 navigation currentdestination이 메인 바텀 메뉴 3개중 하나리면, false를 리턴한다.
+        return when (navController.currentDestination?.id) {
+            R.id.topNewsFragment, R.id.categoriesFragment, R.id.savedFragment-> {
+                false
+            }
+            else -> {
+                true
+            }
+        }
+    }
 }
