@@ -20,8 +20,10 @@ import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.remote.retrofit.RetrofitHelper
 import com.example.local.room.LocalDataBase
 import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
+import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.presentation.util.Util.navigateWithAnim
+import com.example.util.const.Const.PARAM_ARTICLE_MODEL
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -34,7 +36,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
     private var page = 1
     private var rcyScrollLState: Parcelable? = null
     lateinit var topNewsListAdapter: TopNewsListAdapter
-    private val topNewsList = mutableListOf<ArticleDataModel>()
+    private val topNewsList = mutableListOf<ArticlePresentationDataModel>()
     private var isAlreadyInitialized = false
     private var categoryString  = ""
 
@@ -67,9 +69,9 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
     private fun setListenerEvent() {
         topNewsListAdapter.setOnTopNewsItemClickListener(object :
             TopNewsListAdapter.ItemClickListener {
-            override fun onTopNewItemClick(article: ArticleDataModel) {
+            override fun onTopNewItemClick(article: ArticlePresentationDataModel) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
-                    putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
+                    putParcelable(PARAM_ARTICLE_MODEL,article)//닉네임 보냄
                 })
             }
         })
@@ -132,7 +134,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
         if(!isAlreadyInitialized){
             isAlreadyInitialized = true
             arguments?.apply {
-                getParcelableArrayList<ArticleDataModel>(ARTICLE_LIST)?.toMutableList()
+                getParcelableArrayList<ArticlePresentationDataModel>(ARTICLE_LIST)?.toMutableList()
                     ?.let {
                         topNewsList.addAll(it)
                     }
@@ -169,7 +171,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
 
                 val newTopNewsArticleList = it
 
-                topNewsList.addAll(newTopNewsArticleList)
+                topNewsList.addAll(newTopNewsArticleList.map { it.fromArticleData() })
 
                 page++
 

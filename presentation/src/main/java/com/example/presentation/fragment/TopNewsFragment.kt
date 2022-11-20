@@ -21,6 +21,8 @@ import com.example.local.room.LocalDataBase
 import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.local.PreferenceManager
+import com.example.presentation.mapper.ArticlePresentationMapper
+import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Util.navigateWithAnim
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -32,7 +34,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     private var page = 1
     private var rcyScrollLState: Parcelable? = null
     private var isAlreadyInitialized = false
-    private val topNewsList = mutableListOf<ArticleDataModel>()
+    private val topNewsList = mutableListOf<ArticlePresentationDataModel>()
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
@@ -77,7 +79,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     private fun setListenerEvent() {
         topNewsListAdapter.setOnTopNewsItemClickListener(object :
             TopNewsListAdapter.ItemClickListener {
-            override fun onTopNewItemClick(article: ArticleDataModel) {
+            override fun onTopNewItemClick(article: ArticlePresentationDataModel) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
                     putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
                 })
@@ -141,7 +143,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
             .subscribe({
                 val newTopNewsArticleList = it
 
-                topNewsList.addAll(newTopNewsArticleList)
+                topNewsList.addAll(newTopNewsArticleList.map { it.fromArticleData() })
 
                 page++
                 topNewsListAdapter.submitList(topNewsList)

@@ -3,7 +3,9 @@ package com.example.presentation.mapper
 
 /**
  * presentation 모듈  mapping interface
-**/
-interface PresentationMapper<T, E> {
-    fun T.toData(): E
+ **/
+interface ArticlePresentationMapper<T, E> {
+    fun T.toArticleData(): E
+    fun E.fromArticleData(): T
 }
+

@@ -16,6 +16,7 @@ import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.remote.retrofit.RetrofitHelper
 import com.example.local.room.LocalDataBase
 import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
+import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.presentation.util.Util.checkTimePassed
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -24,7 +25,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class ArticleDetailFragment :
     BaseFragment<FragmentArticleDetailBinding>(R.layout.fragment_article_detail) {
 
-    private var article: ArticleDataModel? = null
+    private var article: ArticlePresentationDataModel? = null
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
@@ -124,7 +125,7 @@ class ArticleDetailFragment :
                 return@setOnClickListener
             }
 
-            topNewsRepository.removeArticle(article = article!!)
+            topNewsRepository.removeArticle(article = article?.toArticleData()?:return@setOnClickListener)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -140,7 +141,7 @@ class ArticleDetailFragment :
                 return@setOnClickListener
             }
 
-            topNewsRepository.saveArticle(article = article!!)
+            topNewsRepository.saveArticle(article = article?.toArticleData()?:return@setOnClickListener)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

@@ -16,8 +16,10 @@ import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.remote.retrofit.RetrofitHelper
 import com.example.local.room.LocalDataBase
 import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
+import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.presentation.util.Util.navigateWithAnim
+import com.example.util.const.Const
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
@@ -70,9 +72,9 @@ class SavedFragment:BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) 
     private fun setListenerEvent() {
         topNewsListAdapter.setOnTopNewsItemClickListener(object :
             TopNewsListAdapter.ItemClickListener {
-            override fun onTopNewItemClick(article: ArticleDataModel) {
+            override fun onTopNewItemClick(article: ArticlePresentationDataModel) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
-                    putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
+                    putParcelable(Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
                 })
             }
         })
@@ -101,10 +103,9 @@ class SavedFragment:BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) 
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ articles ->
-                topNewsListAdapter.submitList(articles)
+                topNewsListAdapter.submitList(articles.map { it.fromArticleData() })
                 binding.rvSavedNewsList.layoutManager?.onRestoreInstanceState(rcyScrollLState)
             }, {
-                Timber.v("asasadadasd ->"+it.message)
                 showToast(it.message.toString())
             })
     }
