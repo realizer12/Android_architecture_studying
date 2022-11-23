@@ -3,35 +3,36 @@ package com.example.presentation.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.data.repository.news.TopNewsRepository
+import com.example.data.repository.news.TopNewsRepositoryImpl
+import com.example.local.PreferenceManager
+import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
+import com.example.local.room.LocalDataBase
 import com.example.presentation.R
 import com.example.presentation.activity.SplashActivity
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentTopNewsBinding
-import com.example.data.model.ArticleDataModel
-import com.example.data.repository.news.TopNewsRepository
-import com.example.data.repository.news.TopNewsRepositoryImpl
-import com.example.remote.retrofit.RetrofitHelper
-import com.example.local.room.LocalDataBase
-import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
-import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
-import com.example.local.PreferenceManager
-import com.example.presentation.mapper.ArticlePresentationMapper
 import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Util.navigateWithAnim
+import com.example.presentation.viewmodel.TopNewsViewModel
+import com.example.presentation.viewmodel.factory.TopNewsViewModelFactory
+import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
+import com.example.remote.retrofit.RetrofitHelper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 
 class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_top_news) {
 
     lateinit var topNewsListAdapter: TopNewsListAdapter
-    private var totalResult = DEFAULT_LIST_SIZE
-    private var page = 1
+
     private var rcyScrollLState: Parcelable? = null
     private var isAlreadyInitialized = false
     private val topNewsList = mutableListOf<ArticlePresentationDataModel>()
@@ -48,10 +49,20 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
         TopNewsRepositoryImpl(topNewsRemoteDataSource, topNewsLocalDataSource)
     }
 
+    private val topNewsViewModel: TopNewsViewModel by lazy {
+        ViewModelProvider(
+            owner = requireActivity(),
+            factory = TopNewsViewModelFactory(repository = topNewsRepository)
+        )[TopNewsViewModel::class.java]
+    }
+
+
+
     override fun FragmentTopNewsBinding.onCreateView() {
         initSet()
         setListenerEvent()
         setToolbar()
+        getDataFromVm()
     }
 
     private fun initSet() {
@@ -68,7 +79,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
         if (!isAlreadyInitialized) {
             isAlreadyInitialized = true
             //탑 뉴스기사 리스트 가져오기
-            getTopNewsList()
+//            getTopNewsList()
         } else {
             topNewsListAdapter.submitList(topNewsList)
             binding.rvTopNewsList.layoutManager?.onRestoreInstanceState(rcyScrollLState)
@@ -104,7 +115,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
                 if (!recyclerView.canScrollVertically(1)
                     && lastVisiblePosition == lastPosition
                 ) {
-                    getTopNewsList()
+//                    getTopNewsList()
                 }
             }
         })
@@ -129,33 +140,13 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
         binding.toolbar.tvTitle.text = requireActivity().getString(R.string.top_news)
     }
 
-    //탑 뉴스 리스트 가져오기
-    private fun getTopNewsList() {
 
-        //전체 reesult 값이  현재 뉴스 리스트 값과 같거나 작으면, 페이징  처리 마감. 해줌.
-        if (totalResult != DEFAULT_LIST_SIZE && totalResult <= topNewsListAdapter.currentList.size) {
-            return
-        }
-
-        topNewsRepository.getTopHeadLines(page = page, pageSize = com.example.util.const.Const.PageSize)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                val newTopNewsArticleList = it
-
-                topNewsList.addAll(newTopNewsArticleList.map { it.fromArticleData() })
-
-                page++
-                topNewsListAdapter.submitList(topNewsList)
-
-                //기존  스크롤  위치 정보 캐싱되어있으면 다시 적용 해줌.
-                if (rcyScrollLState != null) {
-                    binding.rvTopNewsList.layoutManager?.onRestoreInstanceState(rcyScrollLState)
-                }
-
-            },{
-                showToast(it.message.toString())
-            })
+    private fun getDataFromVm(){
+        topNewsViewModel.topNewsListPublishSubject.subscribe({
+            Timber.v("asdasdasd ->"+it)
+        },{
+            showToast(it.message.toString())
+        })
     }
 
     companion object {
