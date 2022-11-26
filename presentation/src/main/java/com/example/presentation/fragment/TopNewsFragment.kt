@@ -35,7 +35,6 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
 
     private var rcyScrollLState: Parcelable? = null
     private var isAlreadyInitialized = false
-    private val topNewsList = mutableListOf<ArticlePresentationDataModel>()
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
@@ -51,14 +50,19 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
 
     private val topNewsViewModel: TopNewsViewModel by lazy {
         ViewModelProvider(
-            owner = requireActivity(),
+            owner = this,
             factory = TopNewsViewModelFactory(repository = topNewsRepository)
         )[TopNewsViewModel::class.java]
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Timber.v(" 여기로 탐 ")
+    }
 
 
     override fun FragmentTopNewsBinding.onCreateView() {
+        Timber.v(" 여기로 탐 ")
         initSet()
         setListenerEvent()
         setToolbar()
@@ -81,7 +85,6 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
             //탑 뉴스기사 리스트 가져오기
 //            getTopNewsList()
         } else {
-            topNewsListAdapter.submitList(topNewsList)
             binding.rvTopNewsList.layoutManager?.onRestoreInstanceState(rcyScrollLState)
         }
     }
@@ -142,11 +145,15 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
 
 
     private fun getDataFromVm(){
-        topNewsViewModel.topNewsListPublishSubject.subscribe({
-            Timber.v("asdasdasd ->"+it)
-        },{
+        topNewsViewModel.topNewsListBehaviorSubject.subscribe { topNewsList ->
+            topNewsListAdapter.submitList(topNewsList)
+        }
+
+        //에러가 나왔을떄
+        topNewsViewModel.errorPublishSubject.subscribe {
             showToast(it.message.toString())
-        })
+        }
+
     }
 
     companion object {

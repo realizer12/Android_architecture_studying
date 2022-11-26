@@ -6,8 +6,8 @@ import com.example.presentation.fragment.TopNewsFragment
 import com.example.presentation.model.ArticlePresentationDataModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
-import timber.log.Timber
 
 /**
  * main activity용 뷰모델이다.
@@ -19,7 +19,13 @@ class TopNewsViewModel(
     private var totalResult = TopNewsFragment.DEFAULT_LIST_SIZE
     private var page = 1
 
-    val topNewsListPublishSubject: PublishSubject<List<ArticlePresentationDataModel>> = PublishSubject.create()
+    //topnews는 최신 데이터 유지를 위해 behavior subject로 사용
+    val topNewsListBehaviorSubject: BehaviorSubject<List<ArticlePresentationDataModel>> =
+        BehaviorSubject.create()
+
+    //error 는 한번만 보여주면 되므로, publish를 사용한다.
+    val errorPublishSubject: PublishSubject<Throwable> =
+        PublishSubject.create()
 
     init {
         getTopNewsList()
@@ -34,9 +40,9 @@ class TopNewsViewModel(
             .subscribe({
                 val newTopNewsArticleList = it
                 page++
-                topNewsListPublishSubject.onNext(newTopNewsArticleList.map { it.fromArticleData() })
+                topNewsListBehaviorSubject.onNext(newTopNewsArticleList.map { it.fromArticleData() })
             },{
-                topNewsListPublishSubject.onError(it)
+                errorPublishSubject.onNext(it)
             }).addDisposable()
     }
 
