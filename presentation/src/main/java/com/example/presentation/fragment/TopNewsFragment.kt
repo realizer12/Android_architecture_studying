@@ -25,16 +25,12 @@ import com.example.presentation.viewmodel.TopNewsViewModel
 import com.example.presentation.viewmodel.factory.TopNewsViewModelFactory
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.remote.retrofit.RetrofitHelper
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
-import timber.log.Timber
 
 class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_top_news) {
 
     lateinit var topNewsListAdapter: TopNewsListAdapter
 
     private var rcyScrollLState: Parcelable? = null
-    private var isAlreadyInitialized = false
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
@@ -44,7 +40,8 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     private val topNewsRepository: TopNewsRepository by lazy {
         val topNewsRemoteDataSource = TopNewsRemoteDataSourceImpl(RetrofitHelper)
         val topNewsLocalDataSource = SavedNewsLocalDataSourceImpl(
-            LocalDataBase.getInstance(requireActivity().applicationContext))
+            LocalDataBase.getInstance(requireActivity().applicationContext)
+        )
         TopNewsRepositoryImpl(topNewsRemoteDataSource, topNewsLocalDataSource)
     }
 
@@ -55,14 +52,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
         )[TopNewsViewModel::class.java]
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Timber.v(" 여기로 탐 ")
-    }
-
-
     override fun FragmentTopNewsBinding.onCreateView() {
-        Timber.v(" 여기로 탐 ")
         initSet()
         setListenerEvent()
         setToolbar()
@@ -80,13 +70,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
             adapter = topNewsListAdapter
         }
 
-        if (!isAlreadyInitialized) {
-            isAlreadyInitialized = true
-            //탑 뉴스기사 리스트 가져오기
-//            getTopNewsList()
-        } else {
-            binding.rvTopNewsList.layoutManager?.onRestoreInstanceState(rcyScrollLState)
-        }
+        binding.rvTopNewsList.layoutManager?.onRestoreInstanceState(rcyScrollLState)
     }
 
     //리스너 이벤트 모음
@@ -95,7 +79,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
             TopNewsListAdapter.ItemClickListener {
             override fun onTopNewItemClick(article: ArticlePresentationDataModel) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
-                    putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
+                    putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL, article)//닉네임 보냄
                 })
             }
         })
@@ -118,7 +102,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
                 if (!recyclerView.canScrollVertically(1)
                     && lastVisiblePosition == lastPosition
                 ) {
-//                    getTopNewsList()
+                    topNewsViewModel.getTopNewsList()
                 }
             }
         })
@@ -130,7 +114,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     }
 
     //로그아웃 처리
-    private fun logout(){
+    private fun logout() {
         LocalDataBase.destroyInstance()
         PreferenceManager.removeAllPreference(requireActivity())//로그인 체크 값 다 지워줌.
         startActivity(Intent(requireActivity(), SplashActivity::class.java))
@@ -144,7 +128,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     }
 
 
-    private fun getDataFromVm(){
+    private fun getDataFromVm() {
         topNewsViewModel.topNewsListBehaviorSubject.subscribe { topNewsList ->
             topNewsListAdapter.submitList(topNewsList)
         }
