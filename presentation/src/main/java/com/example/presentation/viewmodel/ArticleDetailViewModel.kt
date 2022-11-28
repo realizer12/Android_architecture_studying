@@ -20,11 +20,14 @@ class ArticleDetailViewModel(
 ):BaseViewModel() {
 
     //article 데이터 넘겨 받음.
-    private val detailArticleModel = savedStateHandle?.get<ArticlePresentationDataModel>(Const.PARAM_ARTICLE_MODEL)
+    private val detailArticleModel = savedStateHandle.get<ArticlePresentationDataModel>(Const.PARAM_ARTICLE_MODEL)
 
 
     //topnews는 최신 데이터 유지를 위해 behavior subject로 사용
     val isSaveArticle: BehaviorSubject<Boolean> =
+        BehaviorSubject.create()
+
+    val detailArticle: BehaviorSubject<ArticlePresentationDataModel> =
         BehaviorSubject.create()
 
     //error 는 한번만 보여주면 되므로, publish를 사용한다.
@@ -32,7 +35,13 @@ class ArticleDetailViewModel(
         PublishSubject.create()
 
     init {
+
+        detailArticleModel?.let {
+            detailArticle.onNext(it)
+        }
+
         checkSavedArticle()
+
     }
 
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.data.repository.news.TopNewsRepository
 import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
@@ -14,17 +15,15 @@ import com.example.local.room.LocalDataBase
 import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentArticleDetailBinding
-import com.example.presentation.model.ArticlePresentationDataModel
+import com.example.presentation.util.Util.checkTimePassed
 import com.example.presentation.viewmodel.ArticleDetailViewModel
-import com.example.presentation.viewmodel.factory.ViewModelFactory
+import com.example.presentation.viewmodel.factory.ArticleDetailViewModelFactory
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.remote.retrofit.RetrofitHelper
 import com.example.util.const.Const
 
 class ArticleDetailFragment :
     BaseFragment<FragmentArticleDetailBinding>(R.layout.fragment_article_detail) {
-
-    private var article: ArticlePresentationDataModel? = null
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
@@ -48,7 +47,7 @@ class ArticleDetailFragment :
     private val articleDetailViewModel: ArticleDetailViewModel by lazy {
         ViewModelProvider(
             owner = this,
-            factory = ViewModelFactory(repository = topNewsRepository,this.savedStateRegistry.getSavedStateProvider())
+            factory = ArticleDetailViewModelFactory(repository = topNewsRepository)
         )[ArticleDetailViewModel::class.java]
     }
 
@@ -73,20 +72,6 @@ class ArticleDetailFragment :
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHost.findNavController()
 
-//        //뷰에 값 세팅
-//        if (article != null) {
-//
-//            binding.toolbar.tvTitle.text = article?.title ?: ""
-//            binding.tvAuthor.text = article?.author ?: "unknown writer"
-//            binding.tvNewsTitle.text = article?.title ?: ""
-//            binding.tvNewsContent.text = article?.content ?: ""
-//            binding.tvPublishTime.text = article?.publishedAt?.checkTimePassed()
-//
-//            //썸네일 이미지 적용
-//            Glide.with(requireActivity())
-//                .load(article?.urlToImage)
-//                .into(binding.ivNewsThumbnail)
-//        }
     }
 
 
@@ -150,6 +135,20 @@ class ArticleDetailFragment :
         //에러가 나왔을떄
         articleDetailViewModel.errorPublishSubject.subscribe {
             showToast(it.message.toString())
+        }
+
+
+        articleDetailViewModel.detailArticle.subscribe { article ->
+            binding.toolbar.tvTitle.text = article.title ?: ""
+            binding.tvAuthor.text = article.author ?: "unknown writer"
+            binding.tvNewsTitle.text = article.title ?: ""
+            binding.tvNewsContent.text = article.content ?: ""
+            binding.tvPublishTime.text = article.publishedAt?.checkTimePassed()
+
+            //썸네일 이미지 적용
+            Glide.with(requireActivity())
+                .load(article.urlToImage)
+                .into(binding.ivNewsThumbnail)
         }
 
     }

@@ -1,19 +1,22 @@
 package com.example.presentation.viewmodel.factory
 
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.data.repository.news.TopNewsRepository
 import com.example.presentation.viewmodel.ArticleDetailViewModel
-import com.example.presentation.viewmodel.TopNewsViewModel
 
-class ViewModelFactory(
+class ArticleDetailViewModelFactory(
     private val repository: TopNewsRepository
- ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+) : AbstractSavedStateViewModelFactory() {
+    override fun <T : ViewModel> create(
+        key: String,
+        modelClass: Class<T>,
+        handle: SavedStateHandle
+    ): T {
         return when {
-            modelClass.isAssignableFrom(TopNewsViewModel::class.java) -> {
-                TopNewsViewModel(repository) as T
+            modelClass.isAssignableFrom(ArticleDetailViewModel::class.java) -> {
+                ArticleDetailViewModel(repository, handle) as T
             }
             else -> {
                 throw Exception("cannot create viewModel")
@@ -21,5 +24,3 @@ class ViewModelFactory(
         }
     }
 }
-
-
