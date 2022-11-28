@@ -42,7 +42,7 @@ class CategoriesFragment:BaseFragment<FragmentCategoriesBinding>(R.layout.fragme
         Category.values().forEach { category->
             view?.findViewById<AppCompatTextView>(category.viewId)?.setOnClickListener {
                 navController.navigateWithAnim(R.id.categoryTopNewsFragment, Bundle().apply {
-                    putString(com.example.util.const.Const.PARAM_ARTICLE_CATEGORY,category.queryString)//선택한 카테고리 보냄.
+                    putString(Const.PARAM_ARTICLE_CATEGORY,category.queryString)//선택한 카테고리 보냄.
                 })
             }
         }

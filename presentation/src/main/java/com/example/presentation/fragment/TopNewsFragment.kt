@@ -22,7 +22,7 @@ import com.example.presentation.databinding.FragmentTopNewsBinding
 import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.TopNewsViewModel
-import com.example.presentation.viewmodel.factory.TopNewsViewModelFactory
+import com.example.presentation.viewmodel.factory.ViewModelFactory
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.remote.retrofit.RetrofitHelper
 
@@ -48,7 +48,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     private val topNewsViewModel: TopNewsViewModel by lazy {
         ViewModelProvider(
             owner = this,
-            factory = TopNewsViewModelFactory(repository = topNewsRepository)
+            factory = ViewModelFactory(repository = topNewsRepository)
         )[TopNewsViewModel::class.java]
     }
 
