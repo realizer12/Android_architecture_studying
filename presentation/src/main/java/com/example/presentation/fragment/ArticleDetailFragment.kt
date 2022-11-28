@@ -91,34 +91,16 @@ class ArticleDetailFragment :
 
         //save 취소
         binding.ivIconSaved.setOnClickListener {
-//            if (article == null) {
-//                return@setOnClickListener
-//            }
-//
-//            topNewsRepository.removeArticle(article = article?.toArticleData()?:return@setOnClickListener)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({
-//                    setSaveIconVisible(isSaveStatus = false)
-//                }, {
-//                    showToast(it.message.toString())
-//                })
+            with(articleDetailViewModel){
+                unSaveArticle()
+            }
         }
 
         //save 하기
         binding.ivIconNotSaved.setOnClickListener {
-//            if (article == null) {
-//                return@setOnClickListener
-//            }
-//
-//            topNewsRepository.saveArticle(article = article?.toArticleData()?:return@setOnClickListener)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({
-//                    setSaveIconVisible(isSaveStatus = true)
-//                }, {
-//                    showToast(it.message.toString())
-//                })
+            with(articleDetailViewModel){
+                saveArticle()
+            }
         }
 
         //뒤로가기
@@ -128,6 +110,8 @@ class ArticleDetailFragment :
     }
 
     private fun getDataFromVm(){
+
+        //article save 여부
         articleDetailViewModel.isSaveArticle.subscribe { isSaveStatus ->
             setSaveIconVisible(isSaveStatus = isSaveStatus)
         }
@@ -138,18 +122,20 @@ class ArticleDetailFragment :
         }
 
 
+        //article Deatail 정보 가저옴.
         articleDetailViewModel.detailArticle.subscribe { article ->
-            binding.toolbar.tvTitle.text = article.title ?: ""
-            binding.tvAuthor.text = article.author ?: "unknown writer"
-            binding.tvNewsTitle.text = article.title ?: ""
-            binding.tvNewsContent.text = article.content ?: ""
-            binding.tvPublishTime.text = article.publishedAt?.checkTimePassed()
+            with(article) {
+                binding.toolbar.tvTitle.text = title ?: ""
+                binding.tvAuthor.text = author ?: "unknown writer"
+                binding.tvNewsTitle.text = title ?: ""
+                binding.tvNewsContent.text = content ?: ""
+                binding.tvPublishTime.text = publishedAt?.checkTimePassed()
 
-            //썸네일 이미지 적용
-            Glide.with(requireActivity())
-                .load(article.urlToImage)
-                .into(binding.ivNewsThumbnail)
+                //썸네일 이미지 적용
+                Glide.with(requireActivity())
+                    .load(urlToImage)
+                    .into(binding.ivNewsThumbnail)
+            }
         }
-
     }
 }

@@ -9,18 +9,18 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
-import timber.log.Timber
 
 /**
  * 게시글 상세화면용 뷰모델
-**/
+ **/
 class ArticleDetailViewModel(
     private val topNewsRepository: TopNewsRepository,
     private val savedStateHandle: SavedStateHandle
-):BaseViewModel() {
+) : BaseViewModel() {
 
     //article 데이터 넘겨 받음.
-    private val detailArticleModel = savedStateHandle.get<ArticlePresentationDataModel>(Const.PARAM_ARTICLE_MODEL)
+    private val detailArticleModel =
+        savedStateHandle.get<ArticlePresentationDataModel>(Const.PARAM_ARTICLE_MODEL)
 
 
     //topnews는 최신 데이터 유지를 위해 behavior subject로 사용
@@ -59,21 +59,34 @@ class ArticleDetailViewModel(
     }
 
 
-//    //게시글 저장 취소
-//    fun unSaveArticle(){
-//        topNewsRepository.removeArticle(article = article?.toArticleData()?:return)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({
-//                setSaveIconVisible(isSaveStatus = false)
-//            }, {
-//                showToast(it.message.toString())
-//            })
-//    }
+    //게시글 저장 취소
+    fun unSaveArticle() {
+        if (detailArticleModel == null) {
+            return
+        }
+        topNewsRepository.removeArticle(article = detailArticleModel.toArticleData())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                isSaveArticle.onNext(false)
+            }, {
+                errorPublishSubject.onNext(it)
+            })
+    }
 
 
     //게시물 저장
-    fun saveArticle(){
-
+    fun saveArticle() {
+        if (detailArticleModel == null) {
+            return
+        }
+        topNewsRepository.saveArticle(article = detailArticleModel.toArticleData())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                isSaveArticle.onNext(true)
+            }, {
+                errorPublishSubject.onNext(it)
+            })
     }
 }
