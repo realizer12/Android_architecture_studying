@@ -5,29 +5,29 @@ import android.os.Parcelable
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.data.repository.news.TopNewsRepository
+import com.example.data.repository.news.TopNewsRepositoryImpl
+import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
+import com.example.local.room.LocalDataBase
 import com.example.presentation.R
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentTopNewsBinding
-import com.example.data.model.ArticleDataModel
-import com.example.data.repository.news.TopNewsRepository
-import com.example.data.repository.news.TopNewsRepositoryImpl
-import com.example.remote.retrofit.RetrofitHelper
-import com.example.local.room.LocalDataBase
-import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
 import com.example.presentation.model.ArticlePresentationDataModel
-import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.presentation.util.Util.navigateWithAnim
+import com.example.presentation.viewmodel.CategoryTopNewsViewModel
+import com.example.presentation.viewmodel.factory.ViewModelFactory
+import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
+import com.example.remote.retrofit.RetrofitHelper
 import com.example.util.const.Const.PARAM_ARTICLE_MODEL
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 
-class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_top_news) {
+class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_top_news) {
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
@@ -38,14 +38,24 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
     lateinit var topNewsListAdapter: TopNewsListAdapter
     private val topNewsList = mutableListOf<ArticlePresentationDataModel>()
     private var isAlreadyInitialized = false
-    private var categoryString  = ""
+    private var categoryString = ""
 
     //reposotory 구성 해줌.
-    private val topNewsRepository: TopNewsRepository by lazy{
+    private val topNewsRepository: TopNewsRepository by lazy {
         val topNewsRemoteDataSource = TopNewsRemoteDataSourceImpl(RetrofitHelper)
-        val savedNewsLocalDataSource = SavedNewsLocalDataSourceImpl(LocalDataBase.getInstance(requireActivity()))
-        TopNewsRepositoryImpl(topNewsRemoteDataSource,savedNewsLocalDataSource)
+        val savedNewsLocalDataSource =
+            SavedNewsLocalDataSourceImpl(LocalDataBase.getInstance(requireActivity()))
+        TopNewsRepositoryImpl(topNewsRemoteDataSource, savedNewsLocalDataSource)
     }
+
+
+    private val categoryTopNewsViewModel: CategoryTopNewsViewModel by lazy {
+        ViewModelProvider(
+            owner = this,
+            factory = ViewModelFactory(repository = topNewsRepository)
+        )[CategoryTopNewsViewModel::class.java]
+    }
+
 
     override fun FragmentTopNewsBinding.onCreateView() {
         initSet()
@@ -57,10 +67,14 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
     //그외에는 stationay를 주어 enteranimation을 없애준다.-> 계속 메인 탭 이동시  이미 navigate된 fragment가 기존 설정한
     //enter animation을 실행하여서  이렇게 예외처리 해줌.
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-        return if ((enter && arguments?.getBoolean(com.example.util.const.Const.PARAM_SCREEN_INITIALIZED,false) == true)) {
+        return if ((enter && arguments?.getBoolean(
+                com.example.util.const.Const.PARAM_SCREEN_INITIALIZED,
+                false
+            ) == true)
+        ) {
             AnimationUtils.loadAnimation(context, R.anim.stationary)
         } else {
-            arguments?.putBoolean(com.example.util.const.Const.PARAM_SCREEN_INITIALIZED,true)
+            arguments?.putBoolean(com.example.util.const.Const.PARAM_SCREEN_INITIALIZED, true)
             null
         }
     }
@@ -71,7 +85,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
             TopNewsListAdapter.ItemClickListener {
             override fun onTopNewItemClick(article: ArticlePresentationDataModel) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
-                    putParcelable(PARAM_ARTICLE_MODEL,article)//닉네임 보냄
+                    putParcelable(PARAM_ARTICLE_MODEL, article)//닉네임 보냄
                 })
             }
         })
@@ -94,7 +108,7 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
                 if (!recyclerView.canScrollVertically(1)
                     && lastVisiblePosition == lastPosition
                 ) {
-                    getTopNewsList()
+                    categoryTopNewsViewModel.getCategoryTopNewsList(categoryString)
                 }
             }
         })
@@ -106,15 +120,16 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
     }
 
     //툴바 세팅
-    private fun setToolbar(){
+    private fun setToolbar() {
         binding.toolbar.root.visibility = View.INVISIBLE
         binding.toolbarBack.root.visibility = View.VISIBLE
         binding.toolbarBack.tvTitle.text = "Category - $categoryString"
     }
 
-    private fun initSet(){
+    private fun initSet() {
 
-        categoryString = arguments?.getString(com.example.util.const.Const.PARAM_ARTICLE_CATEGORY)?:""
+        categoryString =
+            arguments?.getString(com.example.util.const.Const.PARAM_ARTICLE_CATEGORY) ?: ""
 
         setToolbar()
 
@@ -131,67 +146,30 @@ class CategoryTopNewsFragment:BaseFragment<FragmentTopNewsBinding>(R.layout.frag
         //맨처음 initalize 안되었을때만 체크해서 혹시 arguments에 저장된거 있는지 체크
         //탭이동시에는 이렇게 해줘야됨.
         //navigation 이동은 이미 스택에 있어서, argument에 있는걸 가져오면 안됨.
-        if(!isAlreadyInitialized){
+        if (!isAlreadyInitialized) {
             isAlreadyInitialized = true
             arguments?.apply {
                 getParcelableArrayList<ArticlePresentationDataModel>(ARTICLE_LIST)?.toMutableList()
                     ?.let {
                         topNewsList.addAll(it)
                     }
-                getInt(TOTAL_RESULT,TopNewsFragment.DEFAULT_LIST_SIZE).let {
+                getInt(TOTAL_RESULT, TopNewsFragment.DEFAULT_LIST_SIZE).let {
                     totalResult = it
                 }
-                getInt(PAGE,1).let {
+                getInt(PAGE, 1).let {
                     page = it
                 }
             }
         }
 
 
-        if(topNewsList.isNotEmpty()){//만약에 캐싱된 뉴스 리스트가 있으면  바로 리스트 부터 뿌려줌.
+        if (topNewsList.isNotEmpty()) {//만약에 캐싱된 뉴스 리스트가 있으면  바로 리스트 부터 뿌려줌.
             topNewsListAdapter.submitList(topNewsList)
-        }else{
+        } else {
             //탑 뉴스기사 리스트 가져오기
-            getTopNewsList()
+            categoryTopNewsViewModel.getCategoryTopNewsList(categoryString)
         }
     }
-
-
-    //탑 뉴스 리스트 가져오기
-    private fun getTopNewsList() {
-
-        //전체 reesult 값이  현재 뉴스 리스트 값과 같거나 작으면, 페이징  처리 마감. 해줌.
-        if (totalResult != TopNewsFragment.DEFAULT_LIST_SIZE && totalResult <= topNewsListAdapter.currentList.size) {
-            return
-        }
-        topNewsRepository.getTopHeadLines(page = page, pageSize = com.example.util.const.Const.PageSize, category = categoryString)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-
-                val newTopNewsArticleList = it
-
-                topNewsList.addAll(newTopNewsArticleList.map { it.fromArticleData() })
-
-                page++
-
-                arguments?.putParcelableArrayList(ARTICLE_LIST,topNewsList as ArrayList)
-                arguments?.putInt(PAGE,page)
-                arguments?.putInt(TOTAL_RESULT,totalResult)
-
-                topNewsListAdapter.submitList(topNewsList)
-
-                //기존  스크롤  위치 정보 캐싱되어있으면 다시 적용 해줌.
-                if (rcyScrollLState != null) {
-                    binding.rvTopNewsList.layoutManager?.onRestoreInstanceState(rcyScrollLState)
-                }
-            },{
-                showToast(it.message.toString())
-            })
-
-
-    }
-
 
     companion object {
         const val DEFAULT_LIST_SIZE = -1
