@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.data.repository.news.TopNewsRepository
 import com.example.presentation.viewmodel.CategoryTopNewsViewModel
+import com.example.presentation.viewmodel.SavedViewModel
 import com.example.presentation.viewmodel.TopNewsViewModel
 
 class ViewModelFactory(
@@ -13,6 +14,9 @@ class ViewModelFactory(
         return when {
             modelClass.isAssignableFrom(TopNewsViewModel::class.java) -> {
                 TopNewsViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(SavedViewModel::class.java) -> {
+                SavedViewModel(repository) as T
             }
             else -> {
                 throw Exception("cannot create viewModel")

@@ -2,29 +2,28 @@ package com.example.presentation.fragment
 
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.data.repository.news.TopNewsRepository
+import com.example.data.repository.news.TopNewsRepositoryImpl
+import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
+import com.example.local.room.LocalDataBase
 import com.example.presentation.R
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentSavedBinding
-import com.example.data.model.ArticleDataModel
-import com.example.data.repository.news.TopNewsRepository
-import com.example.data.repository.news.TopNewsRepositoryImpl
-import com.example.remote.retrofit.RetrofitHelper
-import com.example.local.room.LocalDataBase
-import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
 import com.example.presentation.model.ArticlePresentationDataModel
-import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.presentation.util.Util.navigateWithAnim
+import com.example.presentation.viewmodel.SavedViewModel
+import com.example.presentation.viewmodel.factory.ViewModelFactory
+import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
+import com.example.remote.retrofit.RetrofitHelper
 import com.example.util.const.Const
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
-import timber.log.Timber
 
-class SavedFragment:BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) {
+class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) {
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
@@ -34,11 +33,20 @@ class SavedFragment:BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) 
     lateinit var topNewsListAdapter: TopNewsListAdapter
 
     //respository 가져옴
-    private val topNewsRepository: TopNewsRepository by lazy{
+    private val topNewsRepository: TopNewsRepository by lazy {
         val topNewsRemoteDataSource = TopNewsRemoteDataSourceImpl(RetrofitHelper)
-        val savedNewsLocalDataSource = SavedNewsLocalDataSourceImpl(LocalDataBase.getInstance(requireActivity()))
-        TopNewsRepositoryImpl(topNewsRemoteDataSource,savedNewsLocalDataSource)
+        val savedNewsLocalDataSource =
+            SavedNewsLocalDataSourceImpl(LocalDataBase.getInstance(requireActivity()))
+        TopNewsRepositoryImpl(topNewsRemoteDataSource, savedNewsLocalDataSource)
     }
+
+    private val savedViewModel: SavedViewModel by lazy {
+        ViewModelProvider(
+            owner = this,
+            factory = ViewModelFactory(repository = topNewsRepository)
+        )[SavedViewModel::class.java]
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +57,11 @@ class SavedFragment:BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) 
 
     override fun FragmentSavedBinding.onCreateView() {
         initSet()
+        getDataFromVm()
         setListenerEvent()
     }
-    private fun initSet(){
+
+    private fun initSet() {
 
         navHost =
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -63,9 +73,8 @@ class SavedFragment:BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) 
         }
 
         setToolbar()
-        getSavedNewsList()
+        savedViewModel.getSavedNewsList()
     }
-
 
 
     //리스너 이벤트 모음
@@ -74,7 +83,7 @@ class SavedFragment:BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) 
             TopNewsListAdapter.ItemClickListener {
             override fun onTopNewItemClick(article: ArticlePresentationDataModel) {
                 navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
-                    putParcelable(Const.PARAM_ARTICLE_MODEL,article)//닉네임 보냄
+                    putParcelable(Const.PARAM_ARTICLE_MODEL, article)//닉네임 보냄
                 })
             }
         })
@@ -94,29 +103,25 @@ class SavedFragment:BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) 
         super.onSaveInstanceState(outState)
 
         //햔제 스크롤 포지션 저장
-        outState.putParcelable(PARAM_RCY_SCROLL_STATE,rcyScrollLState)
+        outState.putParcelable(PARAM_RCY_SCROLL_STATE, rcyScrollLState)
     }
 
-    private fun getSavedNewsList(){
-        //저장 여부 체크
-        topNewsRepository.getSavedArticleList()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ articles ->
-                topNewsListAdapter.submitList(articles.map { it.fromArticleData() })
-                binding.rvSavedNewsList.layoutManager?.onRestoreInstanceState(rcyScrollLState)
-            }, {
-                showToast(it.message.toString())
-            })
-    }
 
+    private fun getDataFromVm() {
+        savedViewModel.savedTopNewsListBehaviorSubject.subscribe {
+            topNewsListAdapter.submitList(it)
+        }
+        savedViewModel.errorPublishSubject.subscribe {
+            showToast(it.message.toString())
+        }
+    }
 
     //toolbar setting
-    private fun setToolbar(){
+    private fun setToolbar() {
         binding.toolbar.tvTitle.text = getString(R.string.saved)
     }
 
-    companion object{
+    companion object {
         const val PARAM_RCY_SCROLL_STATE = "param_rcy_scroll_state"
     }
 }
