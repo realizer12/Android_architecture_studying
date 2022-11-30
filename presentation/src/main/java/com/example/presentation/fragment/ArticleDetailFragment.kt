@@ -17,7 +17,7 @@ import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentArticleDetailBinding
 import com.example.presentation.util.Util.checkTimePassed
 import com.example.presentation.viewmodel.ArticleDetailViewModel
-import com.example.presentation.viewmodel.factory.ArticleDetailViewModelFactory
+import com.example.presentation.viewmodel.factory.StateHandleViewModelFactory
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.remote.retrofit.RetrofitHelper
 import com.example.util.const.Const
@@ -47,7 +47,7 @@ class ArticleDetailFragment :
     private val articleDetailViewModel: ArticleDetailViewModel by lazy {
         ViewModelProvider(
             owner = this,
-            factory = ArticleDetailViewModelFactory(repository = topNewsRepository)
+            factory = StateHandleViewModelFactory(repository = topNewsRepository)
         )[ArticleDetailViewModel::class.java]
     }
 

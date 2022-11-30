@@ -22,9 +22,10 @@ import com.example.presentation.databinding.FragmentTopNewsBinding
 import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.CategoryTopNewsViewModel
-import com.example.presentation.viewmodel.factory.ViewModelFactory
+import com.example.presentation.viewmodel.factory.StateHandleViewModelFactory
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.remote.retrofit.RetrofitHelper
+import com.example.util.const.Const
 import com.example.util.const.Const.PARAM_ARTICLE_MODEL
 
 class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_top_news) {
@@ -32,13 +33,8 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
     private lateinit var navHost: NavHostFragment
-    private var totalResult = TopNewsFragment.DEFAULT_LIST_SIZE
-    private var page = 1
     private var rcyScrollLState: Parcelable? = null
     lateinit var topNewsListAdapter: TopNewsListAdapter
-    private val topNewsList = mutableListOf<ArticlePresentationDataModel>()
-    private var isAlreadyInitialized = false
-    private var categoryString = ""
 
     //reposotory 구성 해줌.
     private val topNewsRepository: TopNewsRepository by lazy {
@@ -52,14 +48,8 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
     private val categoryTopNewsViewModel: CategoryTopNewsViewModel by lazy {
         ViewModelProvider(
             owner = this,
-            factory = ViewModelFactory(repository = topNewsRepository)
+            factory = StateHandleViewModelFactory(repository = topNewsRepository)
         )[CategoryTopNewsViewModel::class.java]
-    }
-
-
-    override fun FragmentTopNewsBinding.onCreateView() {
-        initSet()
-        setListenerEvent()
     }
 
 
@@ -68,15 +58,45 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
     //enter animation을 실행하여서  이렇게 예외처리 해줌.
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         return if ((enter && arguments?.getBoolean(
-                com.example.util.const.Const.PARAM_SCREEN_INITIALIZED,
+                Const.PARAM_SCREEN_INITIALIZED,
                 false
             ) == true)
         ) {
             AnimationUtils.loadAnimation(context, R.anim.stationary)
         } else {
-            arguments?.putBoolean(com.example.util.const.Const.PARAM_SCREEN_INITIALIZED, true)
+            arguments?.putBoolean(Const.PARAM_SCREEN_INITIALIZED, true)
             null
         }
+    }
+
+
+    override fun FragmentTopNewsBinding.onCreateView() {
+        initSet()
+        getDataFromVm()
+        setListenerEvent()
+    }
+
+    //툴바 세팅
+    private fun setToolbar() {
+        binding.toolbar.root.visibility = View.INVISIBLE
+        binding.toolbarBack.root.visibility = View.VISIBLE
+        binding.toolbarBack.tvTitle.text = "Category - ${categoryTopNewsViewModel.categoryString}"
+    }
+
+    private fun initSet() {
+        setToolbar()
+
+        navHost =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHost.findNavController()
+
+        topNewsListAdapter = TopNewsListAdapter()
+        binding.rvTopNewsList.apply {
+            adapter = topNewsListAdapter
+        }
+
+        binding.rvTopNewsList.layoutManager?.onRestoreInstanceState(rcyScrollLState)
+
     }
 
     //리스너 이벤트 모음
@@ -108,7 +128,7 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
                 if (!recyclerView.canScrollVertically(1)
                     && lastVisiblePosition == lastPosition
                 ) {
-                    categoryTopNewsViewModel.getCategoryTopNewsList(categoryString)
+                    categoryTopNewsViewModel.getCategoryTopNewsList()
                 }
             }
         })
@@ -119,62 +139,20 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
         }
     }
 
-    //툴바 세팅
-    private fun setToolbar() {
-        binding.toolbar.root.visibility = View.INVISIBLE
-        binding.toolbarBack.root.visibility = View.VISIBLE
-        binding.toolbarBack.tvTitle.text = "Category - $categoryString"
-    }
 
-    private fun initSet() {
+    //뷰모델에서 데이터 받을때 처리
+    private fun getDataFromVm() {
 
-        categoryString =
-            arguments?.getString(com.example.util.const.Const.PARAM_ARTICLE_CATEGORY) ?: ""
-
-        setToolbar()
-
-        navHost =
-            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHost.findNavController()
-
-        topNewsListAdapter = TopNewsListAdapter()
-        binding.rvTopNewsList.apply {
-            adapter = topNewsListAdapter
+        //카테고리 탑뉴스 리스트 받아옴.
+        categoryTopNewsViewModel.categoryTopNewsListBehaviorSubject.subscribe {
+            topNewsListAdapter.submitList(it)
         }
 
-
-        //맨처음 initalize 안되었을때만 체크해서 혹시 arguments에 저장된거 있는지 체크
-        //탭이동시에는 이렇게 해줘야됨.
-        //navigation 이동은 이미 스택에 있어서, argument에 있는걸 가져오면 안됨.
-        if (!isAlreadyInitialized) {
-            isAlreadyInitialized = true
-            arguments?.apply {
-                getParcelableArrayList<ArticlePresentationDataModel>(ARTICLE_LIST)?.toMutableList()
-                    ?.let {
-                        topNewsList.addAll(it)
-                    }
-                getInt(TOTAL_RESULT, TopNewsFragment.DEFAULT_LIST_SIZE).let {
-                    totalResult = it
-                }
-                getInt(PAGE, 1).let {
-                    page = it
-                }
-            }
+        //에러 받아와서 토스트 처리
+        categoryTopNewsViewModel.errorPublishSubject.subscribe {
+            showToast(it.message.toString())
         }
 
-
-        if (topNewsList.isNotEmpty()) {//만약에 캐싱된 뉴스 리스트가 있으면  바로 리스트 부터 뿌려줌.
-            topNewsListAdapter.submitList(topNewsList)
-        } else {
-            //탑 뉴스기사 리스트 가져오기
-            categoryTopNewsViewModel.getCategoryTopNewsList(categoryString)
-        }
     }
 
-    companion object {
-        const val DEFAULT_LIST_SIZE = -1
-        const val TOTAL_RESULT = "totalResult"
-        const val PAGE = "page"
-        const val ARTICLE_LIST = "article_list"
-    }
 }

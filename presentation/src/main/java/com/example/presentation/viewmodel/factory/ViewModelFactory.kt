@@ -14,9 +14,6 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(TopNewsViewModel::class.java) -> {
                 TopNewsViewModel(repository) as T
             }
-            modelClass.isAssignableFrom(CategoryTopNewsViewModel::class.java) -> {
-                CategoryTopNewsViewModel(repository) as T
-            }
             else -> {
                 throw Exception("cannot create viewModel")
             }

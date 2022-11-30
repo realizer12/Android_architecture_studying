@@ -5,8 +5,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.data.repository.news.TopNewsRepository
 import com.example.presentation.viewmodel.ArticleDetailViewModel
+import com.example.presentation.viewmodel.CategoryTopNewsViewModel
 
-class ArticleDetailViewModelFactory(
+class StateHandleViewModelFactory(
     private val repository: TopNewsRepository
 ) : AbstractSavedStateViewModelFactory() {
     override fun <T : ViewModel> create(
@@ -17,6 +18,9 @@ class ArticleDetailViewModelFactory(
         return when {
             modelClass.isAssignableFrom(ArticleDetailViewModel::class.java) -> {
                 ArticleDetailViewModel(repository, handle) as T
+            }
+            modelClass.isAssignableFrom(CategoryTopNewsViewModel::class.java) -> {
+                CategoryTopNewsViewModel(repository,handle) as T
             }
             else -> {
                 throw Exception("cannot create viewModel")
