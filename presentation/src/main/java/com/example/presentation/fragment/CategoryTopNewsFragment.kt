@@ -146,12 +146,12 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
         //카테고리 탑뉴스 리스트 받아옴.
         categoryTopNewsViewModel.categoryTopNewsListBehaviorSubject.subscribe {
             topNewsListAdapter.submitList(it)
-        }
+        }.addToDisposable()
 
         //에러 받아와서 토스트 처리
         categoryTopNewsViewModel.errorPublishSubject.subscribe {
             showToast(it.message.toString())
-        }
+        }.addToDisposable()
 
     }
 

@@ -131,12 +131,12 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     private fun getDataFromVm() {
         topNewsViewModel.topNewsListBehaviorSubject.subscribe { topNewsList ->
             topNewsListAdapter.submitList(topNewsList)
-        }
+        }.addToDisposable()
 
         //에러가 나왔을떄
         topNewsViewModel.errorPublishSubject.subscribe {
             showToast(it.message.toString())
-        }
+        }.addToDisposable()
 
     }
 

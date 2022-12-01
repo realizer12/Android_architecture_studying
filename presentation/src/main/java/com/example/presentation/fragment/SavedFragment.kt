@@ -110,10 +110,10 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
     private fun getDataFromVm() {
         savedViewModel.savedTopNewsListBehaviorSubject.subscribe {
             topNewsListAdapter.submitList(it)
-        }
+        }.addToDisposable()
         savedViewModel.errorPublishSubject.subscribe {
             showToast(it.message.toString())
-        }
+        }.addToDisposable()
     }
 
     //toolbar setting

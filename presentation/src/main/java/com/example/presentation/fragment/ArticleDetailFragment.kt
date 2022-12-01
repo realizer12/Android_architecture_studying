@@ -114,12 +114,12 @@ class ArticleDetailFragment :
         //article save 여부
         articleDetailViewModel.isSaveArticle.subscribe { isSaveStatus ->
             setSaveIconVisible(isSaveStatus = isSaveStatus)
-        }
+        }.addToDisposable()
 
         //에러가 나왔을떄
         articleDetailViewModel.errorPublishSubject.subscribe {
             showToast(it.message.toString())
-        }
+        }.addToDisposable()
 
 
         //article Deatail 정보 가저옴.

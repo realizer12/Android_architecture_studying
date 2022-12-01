@@ -12,9 +12,13 @@ import androidx.fragment.app.Fragment
 import com.example.data.model.ArticleDataModel
 import com.example.presentation.mapper.ArticlePresentationMapper
 import com.example.presentation.model.ArticlePresentationDataModel
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 
 open class BaseFragment<VDB:ViewDataBinding>(@LayoutRes val layoutRes: Int):Fragment(),
     ArticlePresentationMapper<ArticlePresentationDataModel,ArticleDataModel > {
+
+    private val compositeDisposable= CompositeDisposable()
 
     lateinit var binding: VDB
 
@@ -34,6 +38,9 @@ open class BaseFragment<VDB:ViewDataBinding>(@LayoutRes val layoutRes: Int):Frag
         Toast.makeText(requireActivity(),msg,Toast.LENGTH_SHORT).show()
     }
 
+    fun Disposable.addToDisposable(){
+        compositeDisposable.add(this)
+    }
 
     override fun ArticleDataModel.fromArticleData(): ArticlePresentationDataModel {
         return  ArticlePresentationDataModel(
@@ -47,4 +54,13 @@ open class BaseFragment<VDB:ViewDataBinding>(@LayoutRes val layoutRes: Int):Frag
         )
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        this.compositeDisposable.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.compositeDisposable.dispose()
+    }
 }
