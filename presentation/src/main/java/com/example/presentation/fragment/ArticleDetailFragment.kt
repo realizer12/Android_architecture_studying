@@ -15,6 +15,7 @@ import com.example.local.room.LocalDataBase
 import com.example.presentation.R
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentArticleDetailBinding
+import com.example.presentation.util.SingleEventObserver
 import com.example.presentation.util.Util.checkTimePassed
 import com.example.presentation.viewmodel.ArticleDetailViewModel
 import com.example.presentation.viewmodel.factory.StateHandleViewModelFactory
@@ -112,18 +113,18 @@ class ArticleDetailFragment :
     private fun getDataFromVm(){
 
         //article save 여부
-        articleDetailViewModel.isSaveArticle.subscribe { isSaveStatus ->
+        articleDetailViewModel.isSaveArticle.observe(viewLifecycleOwner) { isSaveStatus ->
             setSaveIconVisible(isSaveStatus = isSaveStatus)
-        }.addToDisposable()
+        }
 
         //에러가 나왔을떄
-        articleDetailViewModel.errorPublishSubject.subscribe {
+        articleDetailViewModel.errorToast.observe(viewLifecycleOwner,SingleEventObserver{
             showToast(it.message.toString())
-        }.addToDisposable()
+        })
 
 
         //article Deatail 정보 가저옴.
-        articleDetailViewModel.detailArticle.subscribe { article ->
+        articleDetailViewModel.detailArticle.observe(viewLifecycleOwner) { article ->
             with(article) {
                 binding.toolbar.tvTitle.text = title ?: ""
                 binding.tvAuthor.text = author ?: "unknown writer"
