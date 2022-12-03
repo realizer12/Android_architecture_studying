@@ -1,9 +1,12 @@
 package com.example.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.example.data.repository.news.TopNewsRepository
 import com.example.presentation.base.BaseViewModel
 import com.example.presentation.model.ArticlePresentationDataModel
+import com.example.presentation.util.Event
 import com.example.util.const.Const
 import com.example.util.const.Const.PageSize
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -25,13 +28,8 @@ class CategoryTopNewsViewModel(
     //각 카테고리 별  top 뉴스 리스트
     private val tempCategoryTopNewList = mutableListOf<ArticlePresentationDataModel>()
 
-    //topnews는 최신 데이터 유지를 위해 behavior subject로 사용
-    val categoryTopNewsListBehaviorSubject: BehaviorSubject<List<ArticlePresentationDataModel>> =
-        BehaviorSubject.create()
-
-    //error 는 한번만 보여주면 되므로, publish를 사용한다.
-    val errorPublishSubject: PublishSubject<Throwable> =
-        PublishSubject.create()
+    private val _categoryTopNewsList = MutableLiveData<List<ArticlePresentationDataModel>>()
+    val categoryTopNewsList: LiveData<List<ArticlePresentationDataModel>> = _categoryTopNewsList
 
     //category
     val categoryString = savedStateHandle.get<String>(Const.PARAM_ARTICLE_CATEGORY)
@@ -46,7 +44,7 @@ class CategoryTopNewsViewModel(
 
         //카테고리가 없을떄 early 리턴을 시켜준다.
         if(categoryString.isNullOrEmpty()){
-            errorPublishSubject.onNext(Throwable("카테고리가 없어요 ㅠㅠ"))
+            _errorToast.value = Event(Throwable("카테고리가 없어요 ㅠㅠ"))
             return
         }
 
@@ -71,10 +69,10 @@ class CategoryTopNewsViewModel(
                 }
                 page++
                 tempCategoryTopNewList.addAll(newArticleList.map { it.fromArticleData() })
-                categoryTopNewsListBehaviorSubject.onNext(tempCategoryTopNewList.map { it.copy() })
+                _categoryTopNewsList.value = tempCategoryTopNewList.map { it.copy() }
 
             }, {
-                errorPublishSubject.onNext(it)
+                _errorToast.value = Event(it)
             }).addDisposable()
     }
 

@@ -20,6 +20,7 @@ import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentTopNewsBinding
 import com.example.presentation.model.ArticlePresentationDataModel
+import com.example.presentation.util.SingleEventObserver
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.CategoryTopNewsViewModel
 import com.example.presentation.viewmodel.factory.StateHandleViewModelFactory
@@ -144,15 +145,14 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
     private fun getDataFromVm() {
 
         //카테고리 탑뉴스 리스트 받아옴.
-        categoryTopNewsViewModel.categoryTopNewsListBehaviorSubject.subscribe {
+        categoryTopNewsViewModel.categoryTopNewsList.observe(viewLifecycleOwner) {
             topNewsListAdapter.submitList(it)
-        }.addToDisposable()
+        }
 
         //에러 받아와서 토스트 처리
-        categoryTopNewsViewModel.errorPublishSubject.subscribe {
+        categoryTopNewsViewModel.errorToast.observe(viewLifecycleOwner, SingleEventObserver {
             showToast(it.message.toString())
-        }.addToDisposable()
-
+        })
     }
 
 }
