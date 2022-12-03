@@ -20,6 +20,7 @@ import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentTopNewsBinding
 import com.example.presentation.model.ArticlePresentationDataModel
+import com.example.presentation.util.SingleEventObserver
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.TopNewsViewModel
 import com.example.presentation.viewmodel.factory.ViewModelFactory
@@ -129,18 +130,15 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
 
 
     private fun getDataFromVm() {
-        topNewsViewModel.topNewsListBehaviorSubject.subscribe { topNewsList ->
+        topNewsViewModel.topNewsList.observe(viewLifecycleOwner) { topNewsList ->
             topNewsListAdapter.submitList(topNewsList)
-        }.addToDisposable()
+        }
 
         //에러가 나왔을떄
-        topNewsViewModel.errorPublishSubject.subscribe {
+        topNewsViewModel.errorToast.observe(viewLifecycleOwner,SingleEventObserver{
             showToast(it.message.toString())
-        }.addToDisposable()
+        })
 
     }
 
-    companion object {
-        const val DEFAULT_LIST_SIZE = -1
-    }
 }

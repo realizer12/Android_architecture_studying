@@ -16,6 +16,7 @@ import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentSavedBinding
 import com.example.presentation.model.ArticlePresentationDataModel
+import com.example.presentation.util.SingleEventObserver
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.SavedViewModel
 import com.example.presentation.viewmodel.factory.ViewModelFactory
@@ -108,12 +109,13 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
 
 
     private fun getDataFromVm() {
-        savedViewModel.savedTopNewsListBehaviorSubject.subscribe {
+        savedViewModel.savedTopNewList.observe(viewLifecycleOwner) {
             topNewsListAdapter.submitList(it)
-        }.addToDisposable()
-        savedViewModel.errorPublishSubject.subscribe {
+        }
+
+        savedViewModel.errorToast.observe(viewLifecycleOwner,SingleEventObserver{
             showToast(it.message.toString())
-        }.addToDisposable()
+        })
     }
 
     //toolbar setting
