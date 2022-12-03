@@ -11,8 +11,6 @@ import com.example.util.const.Const
 import com.example.util.const.Const.PageSize
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import io.reactivex.rxjava3.subjects.PublishSubject
 
 /**
  * 카테고리별  탑뉴스 리스트용 뷰모델

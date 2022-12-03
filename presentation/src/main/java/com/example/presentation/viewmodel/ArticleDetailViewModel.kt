@@ -10,8 +10,6 @@ import com.example.presentation.util.Event
 import com.example.util.const.Const
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import io.reactivex.rxjava3.subjects.PublishSubject
 
 /**
  * 게시글 상세화면용 뷰모델
@@ -25,7 +23,6 @@ class ArticleDetailViewModel(
     private val detailArticleModel =
         savedStateHandle.get<ArticlePresentationDataModel>(Const.PARAM_ARTICLE_MODEL)
 
-    //topnews는 최신 데이터 유지를 위해 behavior subject로 사용
     private val _isSaveArticle = MutableLiveData<Boolean>()
     val isSaveArticle:LiveData<Boolean> = _isSaveArticle
 

@@ -9,8 +9,6 @@ import com.example.presentation.util.Event
 import com.example.util.const.Const.PageSize
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import io.reactivex.rxjava3.subjects.PublishSubject
 
 /**
  * main activity용 뷰모델이다.
