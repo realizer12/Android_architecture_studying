@@ -32,11 +32,6 @@ class ArticleDetailViewModel(
     private val _detailArticle = MutableLiveData<ArticlePresentationDataModel>()
     val detailArticle:LiveData<ArticlePresentationDataModel> = _detailArticle
 
-    private val _errorToast = MutableLiveData<Event<Throwable>>()
-    val errorToast:LiveData<Event<Throwable>> = _errorToast
-
-
-
     init {
 
         detailArticleModel?.let {

@@ -1,9 +1,12 @@
 package com.example.presentation.base
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.data.model.ArticleDataModel
 import com.example.presentation.mapper.ArticlePresentationMapper
 import com.example.presentation.model.ArticlePresentationDataModel
+import com.example.presentation.util.Event
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -14,6 +17,10 @@ import io.reactivex.rxjava3.kotlin.addTo
 open class BaseViewModel:ViewModel(),
     ArticlePresentationMapper<ArticlePresentationDataModel, ArticleDataModel> {
     private val compositeDisposable = CompositeDisposable()
+
+    //error toast는 공통 사용이므로, base viewmodel 에 넣어줌.
+    protected val _errorToast = MutableLiveData<Event<Throwable>>()
+    val errorToast: LiveData<Event<Throwable>> = _errorToast
 
     fun Disposable.addDisposable(){
         this.addTo(compositeDisposable)
