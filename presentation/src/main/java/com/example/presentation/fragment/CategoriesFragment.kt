@@ -32,8 +32,6 @@ class CategoriesFragment:BaseFragment<FragmentCategoriesBinding>(R.layout.fragme
         navHost =
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHost.findNavController()
-
-        setToolbar()
     }
 
     private fun setEventListener(){
@@ -48,11 +46,4 @@ class CategoriesFragment:BaseFragment<FragmentCategoriesBinding>(R.layout.fragme
         }
     }
 
-
-
-
-    //toolbar setting
-    private fun setToolbar(){
-        binding.toolbar.tvTitle.text = requireActivity().getString(R.string.categories)
-    }
 }

@@ -3,6 +3,7 @@ package com.example.presentation.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -56,7 +57,6 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     override fun FragmentTopNewsBinding.onCreateView() {
         initSet()
         setListenerEvent()
-        setToolbar()
         getDataFromVm()
     }
 
@@ -121,13 +121,6 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
         startActivity(Intent(requireActivity(), SplashActivity::class.java))
         requireActivity().finish()
     }
-
-
-    //toolbar setting
-    private fun setToolbar() {
-        binding.toolbar.tvTitle.text = requireActivity().getString(R.string.top_news)
-    }
-
 
     private fun getDataFromVm() {
         topNewsViewModel.topNewsList.observe(viewLifecycleOwner) { topNewsList ->

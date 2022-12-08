@@ -72,8 +72,6 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
         binding.rvSavedNewsList.apply {
             adapter = topNewsListAdapter
         }
-
-        setToolbar()
         savedViewModel.getSavedNewsList()
     }
 
@@ -116,11 +114,6 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
         savedViewModel.errorToast.observe(viewLifecycleOwner,SingleEventObserver{
             showToast(it.message.toString())
         })
-    }
-
-    //toolbar setting
-    private fun setToolbar() {
-        binding.toolbar.tvTitle.text = getString(R.string.saved)
     }
 
     companion object {
