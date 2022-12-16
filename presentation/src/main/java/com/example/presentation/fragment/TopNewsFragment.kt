@@ -66,12 +66,22 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHost.findNavController()
 
+        binding.topNewsListener = this
+
         topNewsListAdapter = TopNewsListAdapter()
         binding.rvTopNewsList.apply {
             adapter = topNewsListAdapter
         }
-
         binding.rvTopNewsList.layoutManager?.onRestoreInstanceState(rcyScrollLState)
+    }
+
+
+    //로그아웃 처리
+    fun logout() {
+        LocalDataBase.destroyInstance()
+        PreferenceManager.removeAllPreference(requireActivity())//로그인 체크 값 다 지워줌.
+        startActivity(Intent(requireActivity(), SplashActivity::class.java))
+        requireActivity().finish()
     }
 
     //리스너 이벤트 모음
@@ -108,18 +118,6 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
             }
         })
 
-        //toolbar title top news 누르면 로그아웃 처리해줌.
-        binding.toolbar.tvTitle.setOnClickListener {
-            logout()
-        }
-    }
-
-    //로그아웃 처리
-    private fun logout() {
-        LocalDataBase.destroyInstance()
-        PreferenceManager.removeAllPreference(requireActivity())//로그인 체크 값 다 지워줌.
-        startActivity(Intent(requireActivity(), SplashActivity::class.java))
-        requireActivity().finish()
     }
 
     private fun getDataFromVm() {

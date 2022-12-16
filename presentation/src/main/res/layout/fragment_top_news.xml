@@ -7,6 +7,9 @@
         <variable
             name="toolbarTitle"
             type="String" />
+        <variable
+            name="topNewsListener"
+            type="com.example.presentation.fragment.TopNewsFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +22,7 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar_title"
             android:visibility="visible"
+            bind:topNewsListener="@{topNewsListener}"
             bind:toolbarTitle="@{@string/top_news}" />
 
         <include

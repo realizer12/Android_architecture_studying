@@ -7,6 +7,9 @@
         <variable
             name="toolbarTitle"
             type="String" />
+        <variable
+            name="topNewsListener"
+            type="com.example.presentation.fragment.TopNewsFragment" />
     </data>
 
     <androidx.appcompat.widget.Toolbar
@@ -29,6 +32,7 @@
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textStyle="bold"
+                android:onClick="@{()->topNewsListener.logout()}"
                 android:text="@{toolbarTitle}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
