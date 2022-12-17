@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="toolbarTitle"
+            type="String" />
     </data>
 
 
@@ -42,6 +44,7 @@
                 android:maxLines="1"
                 android:textColor="@color/black"
                 android:textStyle="bold"
+                android:text="@{toolbarTitle}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_back_arrow"

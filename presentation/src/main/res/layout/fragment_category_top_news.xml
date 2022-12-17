@@ -25,12 +25,12 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar_title"
-            android:visibility="visible"
-            bind:toolbarTitle="@{String.format(@string/category_detail_toolbar,categoryTopNewsViewModel.categoryString)}"/>
+            android:visibility="visible" />
 
         <include
             android:id="@+id/toolbar_back"
             layout="@layout/toolbar_back"
+            bind:toolbarTitle="@{String.format(@string/category_detail_toolbar,categoryTopNewsViewModel.categoryString)}"
             android:visibility="gone" />
 
 
