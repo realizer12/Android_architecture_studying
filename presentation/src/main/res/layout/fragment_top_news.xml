@@ -10,6 +10,10 @@
         <variable
             name="topNewsListener"
             type="com.example.presentation.fragment.TopNewsFragment" />
+
+        <variable
+            name="topNewsViewModel"
+            type="com.example.presentation.viewmodel.TopNewsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,8 +31,8 @@
 
         <include
             android:id="@+id/toolbar_back"
-            android:visibility="gone"
-            layout="@layout/toolbar_back" />
+            layout="@layout/toolbar_back"
+            android:visibility="gone" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -40,6 +44,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            bind:addList="@{topNewsViewModel.topNewsListData}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

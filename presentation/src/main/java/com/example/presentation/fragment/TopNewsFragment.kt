@@ -67,6 +67,8 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
         navController = navHost.findNavController()
 
         binding.topNewsListener = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.topNewsViewModel = topNewsViewModel
 
         topNewsListAdapter = TopNewsListAdapter()
         binding.rvTopNewsList.apply {
@@ -113,7 +115,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
                 if (!recyclerView.canScrollVertically(1)
                     && lastVisiblePosition == lastPosition
                 ) {
-                    topNewsViewModel.getTopNewsList()
+                    topNewsViewModel.getTopNewList()
                 }
             }
         })
@@ -121,9 +123,6 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     }
 
     private fun getDataFromVm() {
-        topNewsViewModel.topNewsList.observe(viewLifecycleOwner) { topNewsList ->
-            topNewsListAdapter.submitList(topNewsList)
-        }
 
         //에러가 나왔을떄
         topNewsViewModel.errorToast.observe(viewLifecycleOwner,SingleEventObserver{

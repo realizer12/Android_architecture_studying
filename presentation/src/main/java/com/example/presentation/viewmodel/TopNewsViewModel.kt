@@ -22,15 +22,15 @@ class TopNewsViewModel(
 
     private val tempTopNewsList = mutableListOf<ArticlePresentationDataModel>()
 
-    private val _topNewsList = MutableLiveData<List<ArticlePresentationDataModel>>()
-    val topNewsList:LiveData<List<ArticlePresentationDataModel>> = _topNewsList
+    private val _topNewsListData = MutableLiveData<List<ArticlePresentationDataModel>>()
+    val topNewsListData :LiveData<List<ArticlePresentationDataModel>> = _topNewsListData
 
     init {
-        getTopNewsList()
+        getTopNewList()
     }
 
     //탑 뉴스 리스트 가져오기
-    fun getTopNewsList() {
+    fun getTopNewList() {
 
         //페이징 끝났을때  리턴해줌.
         if (isPagingFinish) {
@@ -48,7 +48,7 @@ class TopNewsViewModel(
 
                 page++
                 tempTopNewsList.addAll(newArticleList.map { it.fromArticleData() })
-                _topNewsList.value = tempTopNewsList.map { it.copy() }
+                _topNewsListData.value = tempTopNewsList.map { it.copy() }
             }, {
                 _errorToast.value = Event(it)
             }).addDisposable()
