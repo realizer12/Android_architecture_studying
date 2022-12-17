@@ -1,5 +1,6 @@
 package com.example.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -41,7 +42,7 @@ class ArticleDetailViewModel(
 
 
     //저장한 article 인지 여부를 체크 한다.
-    private fun checkSavedArticle() {
+    fun checkSavedArticle() {
         //저장 여부 체크
         topNewsRepository.getSavedArticleList()
             .subscribeOn(Schedulers.io())

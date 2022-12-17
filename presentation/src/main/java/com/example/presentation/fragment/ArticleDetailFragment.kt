@@ -1,5 +1,6 @@
 package com.example.presentation.fragment
 
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -73,6 +74,8 @@ class ArticleDetailFragment :
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHost.findNavController()
 
+        //각 탭별 연동을 위해 create 될때마다  article 체크를 진행한다.
+        articleDetailViewModel.checkSavedArticle()
     }
 
 
