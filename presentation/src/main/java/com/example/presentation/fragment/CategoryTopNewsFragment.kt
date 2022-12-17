@@ -18,6 +18,7 @@ import com.example.local.room.LocalDataBase
 import com.example.presentation.R
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
+import com.example.presentation.databinding.FragmentCategoryTopNewsBinding
 import com.example.presentation.databinding.FragmentTopNewsBinding
 import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.SingleEventObserver
@@ -29,7 +30,7 @@ import com.example.remote.retrofit.RetrofitHelper
 import com.example.util.const.Const
 import com.example.util.const.Const.PARAM_ARTICLE_MODEL
 
-class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_top_news) {
+class CategoryTopNewsFragment : BaseFragment<FragmentCategoryTopNewsBinding>(R.layout.fragment_category_top_news) {
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
@@ -71,7 +72,7 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
     }
 
 
-    override fun FragmentTopNewsBinding.onCreateView() {
+    override fun FragmentCategoryTopNewsBinding.onCreateView() {
         initSet()
         getDataFromVm()
         setListenerEvent()
@@ -81,7 +82,6 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
     private fun setToolbar() {
         binding.toolbar.root.visibility = View.INVISIBLE
         binding.toolbarBack.root.visibility = View.VISIBLE
-        binding.toolbarBack.tvTitle.text = "Category - ${categoryTopNewsViewModel.categoryString}"
     }
 
     private fun initSet() {
@@ -90,6 +90,10 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
         navHost =
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHost.findNavController()
+
+        binding.categoryTopNewsListener = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.categoryTopNewsViewModel = categoryTopNewsViewModel
 
         topNewsListAdapter = TopNewsListAdapter()
         binding.rvTopNewsList.apply {
@@ -143,11 +147,6 @@ class CategoryTopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fr
 
     //뷰모델에서 데이터 받을때 처리
     private fun getDataFromVm() {
-
-        //카테고리 탑뉴스 리스트 받아옴.
-        categoryTopNewsViewModel.categoryTopNewsList.observe(viewLifecycleOwner) {
-            topNewsListAdapter.submitList(it)
-        }
 
         //에러 받아와서 토스트 처리
         categoryTopNewsViewModel.errorToast.observe(viewLifecycleOwner, SingleEventObserver {

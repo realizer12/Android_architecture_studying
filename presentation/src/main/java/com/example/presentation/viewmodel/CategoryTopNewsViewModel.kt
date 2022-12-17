@@ -26,8 +26,8 @@ class CategoryTopNewsViewModel(
     //각 카테고리 별  top 뉴스 리스트
     private val tempCategoryTopNewList = mutableListOf<ArticlePresentationDataModel>()
 
-    private val _categoryTopNewsList = MutableLiveData<List<ArticlePresentationDataModel>>()
-    val categoryTopNewsList: LiveData<List<ArticlePresentationDataModel>> = _categoryTopNewsList
+    private val _categoryTopNewsListData = MutableLiveData<List<ArticlePresentationDataModel>>()
+    val categoryTopNewsListData: LiveData<List<ArticlePresentationDataModel>> = _categoryTopNewsListData
 
     //category
     val categoryString = savedStateHandle.get<String>(Const.PARAM_ARTICLE_CATEGORY)
@@ -67,7 +67,7 @@ class CategoryTopNewsViewModel(
                 }
                 page++
                 tempCategoryTopNewList.addAll(newArticleList.map { it.fromArticleData() })
-                _categoryTopNewsList.value = tempCategoryTopNewList.map { it.copy() }
+                _categoryTopNewsListData.value = tempCategoryTopNewList.map { it.copy() }
 
             }, {
                 _errorToast.value = Event(it)

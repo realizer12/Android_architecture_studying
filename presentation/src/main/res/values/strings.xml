@@ -3,4 +3,5 @@
     <string name="categories">Categories</string>
     <string name="top_news">Top News</string>
     <string name="saved">Saved</string>
+    <string name="category_detail_toolbar">Category - %s</string>
 </resources>
