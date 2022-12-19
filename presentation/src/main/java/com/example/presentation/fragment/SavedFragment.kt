@@ -68,6 +68,9 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHost.findNavController()
 
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.savedViewModel = savedViewModel
+
         topNewsListAdapter = TopNewsListAdapter()
         binding.rvSavedNewsList.apply {
             adapter = topNewsListAdapter
@@ -107,10 +110,6 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
 
 
     private fun getDataFromVm() {
-        savedViewModel.savedTopNewList.observe(viewLifecycleOwner) {
-            topNewsListAdapter.submitList(it)
-        }
-
         savedViewModel.errorToast.observe(viewLifecycleOwner,SingleEventObserver{
             showToast(it.message.toString())
         })
