@@ -74,6 +74,9 @@ class ArticleDetailFragment :
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHost.findNavController()
 
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.vmArticleDetail = articleDetailViewModel
+
         //각 탭별 연동을 위해 create 될때마다  article 체크를 진행한다.
         articleDetailViewModel.checkSavedArticle()
     }
@@ -129,12 +132,10 @@ class ArticleDetailFragment :
         //article Deatail 정보 가저옴.
         articleDetailViewModel.detailArticle.observe(viewLifecycleOwner) { article ->
             with(article) {
-                binding.toolbar.tvTitle.text = title ?: ""
                 binding.tvAuthor.text = author ?: "unknown writer"
                 binding.tvNewsTitle.text = title ?: ""
                 binding.tvNewsContent.text = content ?: ""
                 binding.tvPublishTime.text = publishedAt?.checkTimePassed()
-
                 //썸네일 이미지 적용
                 Glide.with(requireActivity())
                     .load(urlToImage)
