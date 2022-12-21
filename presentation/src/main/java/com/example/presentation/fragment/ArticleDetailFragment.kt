@@ -128,19 +128,5 @@ class ArticleDetailFragment :
             showToast(it.message.toString())
         })
 
-
-        //article Deatail 정보 가저옴.
-        articleDetailViewModel.detailArticle.observe(viewLifecycleOwner) { article ->
-            with(article) {
-                binding.tvAuthor.text = author ?: "unknown writer"
-                binding.tvNewsTitle.text = title ?: ""
-                binding.tvNewsContent.text = content ?: ""
-                binding.tvPublishTime.text = publishedAt?.checkTimePassed()
-                //썸네일 이미지 적용
-                Glide.with(requireActivity())
-                    .load(urlToImage)
-                    .into(binding.ivNewsThumbnail)
-            }
-        }
     }
 }

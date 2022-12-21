@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="com.example.presentation.util.Util" />
 
         <variable
             name="vmArticleDetail"
@@ -25,8 +27,8 @@
 
             <include
                 android:id="@+id/toolbar"
-                bind:toolbarTitle="@{vmArticleDetail.detailArticle.title}"
-                layout="@layout/toolbar_back" />
+                layout="@layout/toolbar_back"
+                bind:toolbarTitle="@{vmArticleDetail.detailArticle.title}" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_news_title"
@@ -34,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
+                android:text="@{vmArticleDetail.detailArticle.title}"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/fl_save_icon"
@@ -47,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
+                android:text='@{vmArticleDetail.detailArticle.author ?? "unknown writer"}'
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
+                android:text="@{Util.INSTANCE.checkTimePassed(vmArticleDetail.detailArticle.publishedAt)}"
                 android:textColor="#A19E9E"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,6 +112,7 @@
                 android:layout_margin="20dp"
                 android:minHeight="220dp"
                 android:scaleType="centerCrop"
+                bind:loadImage="@{vmArticleDetail.detailArticle.urlToImage}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_author"
@@ -120,6 +126,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
+                android:text='@{vmArticleDetail.detailArticle.content ?? ""}'
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:textStyle="bold"
