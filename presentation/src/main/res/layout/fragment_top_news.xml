@@ -29,11 +29,6 @@
             bind:topNewsListener="@{topNewsListener}"
             bind:toolbarTitle="@{@string/top_news}" />
 
-        <include
-            android:id="@+id/toolbar_back"
-            layout="@layout/toolbar_back"
-            android:visibility="gone" />
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_top_news_list"

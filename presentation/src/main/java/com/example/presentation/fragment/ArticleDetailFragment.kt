@@ -14,6 +14,7 @@ import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
 import com.example.local.room.LocalDataBase
 import com.example.presentation.R
+import com.example.presentation.activity.MainActivity
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentArticleDetailBinding
 import com.example.presentation.util.SingleEventObserver
@@ -33,7 +34,6 @@ class ArticleDetailFragment :
 
     override fun FragmentArticleDetailBinding.onCreateView() {
         initSet()
-        setListenerEvent()
         getDataFromVm()
     }
 
@@ -76,18 +76,10 @@ class ArticleDetailFragment :
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vmArticleDetail = articleDetailViewModel
+        binding.parentActivity = requireActivity() as MainActivity
 
         //각 탭별 연동을 위해 create 될때마다  article 체크를 진행한다.
         articleDetailViewModel.checkSavedArticle()
-    }
-    
-    //리스너 이벤트 모음
-    private fun setListenerEvent() {
-
-        //뒤로가기
-        binding.toolbar.ivBackArrow.setOnClickListener {
-            navController.popBackStack()
-        }
     }
 
     private fun getDataFromVm(){

@@ -12,6 +12,10 @@
             type="com.example.presentation.fragment.CategoryTopNewsFragment" />
 
         <variable
+            name="parentActivity"
+            type="com.example.presentation.activity.MainActivity" />
+
+        <variable
             name="categoryTopNewsViewModel"
             type="com.example.presentation.viewmodel.CategoryTopNewsViewModel" />
     </data>
@@ -30,6 +34,7 @@
         <include
             android:id="@+id/toolbar_back"
             layout="@layout/toolbar_back"
+            bind:parentActivity="@{parentActivity}"
             bind:toolbarTitle="@{String.format(@string/category_detail_toolbar,categoryTopNewsViewModel.categoryString)}"
             android:visibility="gone" />
 

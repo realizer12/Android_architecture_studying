@@ -16,6 +16,7 @@ import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
 import com.example.local.room.LocalDataBase
 import com.example.presentation.R
+import com.example.presentation.activity.MainActivity
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentCategoryTopNewsBinding
@@ -94,6 +95,7 @@ class CategoryTopNewsFragment : BaseFragment<FragmentCategoryTopNewsBinding>(R.l
         binding.categoryTopNewsListener = this
         binding.lifecycleOwner = viewLifecycleOwner
         binding.categoryTopNewsViewModel = categoryTopNewsViewModel
+        binding.parentActivity = requireActivity() as MainActivity
 
         topNewsListAdapter = TopNewsListAdapter()
         binding.rvTopNewsList.apply {
@@ -137,11 +139,6 @@ class CategoryTopNewsFragment : BaseFragment<FragmentCategoryTopNewsBinding>(R.l
                 }
             }
         })
-
-        //뒤로가기 버튼 클릭시
-        binding.toolbarBack.ivBackArrow.setOnClickListener {
-            navController.popBackStack()
-        }
     }
 
 

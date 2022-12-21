@@ -11,6 +11,9 @@
         <variable
             name="vmArticleDetail"
             type="com.example.presentation.viewmodel.ArticleDetailViewModel" />
+        <variable
+            name="parentActivity"
+            type="com.example.presentation.activity.MainActivity" />
 
     </data>
 
@@ -28,6 +31,7 @@
             <include
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar_back"
+                bind:parentActivity="@{parentActivity}"
                 bind:toolbarTitle="@{vmArticleDetail.detailArticle.title}" />
 
             <androidx.appcompat.widget.AppCompatTextView
