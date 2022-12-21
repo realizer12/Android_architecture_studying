@@ -16,7 +16,7 @@ fun <T, VH : RecyclerView.ViewHolder> RecyclerView.addList(list: List<T>?) {
 
 
 @BindingAdapter("bind:loadImage")
-fun ImageView.loadImage(image:String){
+fun ImageView.loadImage(image:String?){
     Glide.with(this.context)
         .load(image)
         .into(this)

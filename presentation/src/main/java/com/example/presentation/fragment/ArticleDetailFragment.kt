@@ -80,35 +80,9 @@ class ArticleDetailFragment :
         //각 탭별 연동을 위해 create 될때마다  article 체크를 진행한다.
         articleDetailViewModel.checkSavedArticle()
     }
-
-
-    //save 뷰 상태 체크
-    private fun setSaveIconVisible(isSaveStatus: Boolean) {
-        if (isSaveStatus) {
-            binding.ivIconSaved.visibility = View.VISIBLE
-            binding.ivIconNotSaved.visibility = View.GONE
-        } else {
-            binding.ivIconSaved.visibility = View.GONE
-            binding.ivIconNotSaved.visibility = View.VISIBLE
-        }
-    }
-
+    
     //리스너 이벤트 모음
     private fun setListenerEvent() {
-
-        //save 취소
-        binding.ivIconSaved.setOnClickListener {
-            with(articleDetailViewModel){
-                unSaveArticle()
-            }
-        }
-
-        //save 하기
-        binding.ivIconNotSaved.setOnClickListener {
-            with(articleDetailViewModel){
-                saveArticle()
-            }
-        }
 
         //뒤로가기
         binding.toolbar.ivBackArrow.setOnClickListener {
@@ -117,11 +91,6 @@ class ArticleDetailFragment :
     }
 
     private fun getDataFromVm(){
-
-        //article save 여부
-        articleDetailViewModel.isSaveArticle.observe(viewLifecycleOwner) { isSaveStatus ->
-            setSaveIconVisible(isSaveStatus = isSaveStatus)
-        }
 
         //에러가 나왔을떄
         articleDetailViewModel.errorToast.observe(viewLifecycleOwner,SingleEventObserver{

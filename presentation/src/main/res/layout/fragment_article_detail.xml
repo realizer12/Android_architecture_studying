@@ -7,7 +7,7 @@
     <data>
 
         <import type="com.example.presentation.util.Util" />
-
+        <import type="android.view.View"/>
         <variable
             name="vmArticleDetail"
             type="com.example.presentation.viewmodel.ArticleDetailViewModel" />
@@ -91,7 +91,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:stateListAnimator="@null"
-                    android:visibility="gone"
+                    android:onClick="@{()-> vmArticleDetail.unSaveArticle()}"
+                    android:visibility="@{vmArticleDetail.isSaveArticle() ? View.VISIBLE : View.GONE}"
                     app:srcCompat="@android:drawable/star_big_on" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -99,7 +100,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:stateListAnimator="@null"
-                    android:visibility="visible"
+                    android:onClick="@{()-> vmArticleDetail.saveArticle()}"
+                    android:visibility="@{vmArticleDetail.isSaveArticle() ? View.GONE : View.VISIBLE}"
                     app:srcCompat="@android:drawable/star_big_off" />
 
 
