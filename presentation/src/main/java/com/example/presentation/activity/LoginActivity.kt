@@ -11,22 +11,14 @@ import com.example.local.PreferenceManager
 
 class LoginActivity:BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
 
-    override fun ActivityLoginBinding.onCreate() {
-        setListenerEvent()
-    }
+    override fun ActivityLoginBinding.onCreate() {}
 
-
-    //리스너 이벤트 모음
-    private fun setListenerEvent(){
-
-        //로그인 버튼 클릭시
-        binding.btnLogin.setOnClickListener {
-            if(isLoginInfoValid()){//로그인 정보가 모두 맞는 경우
-                goToMainScreen()
-                finish()
-            }else{
-                showToast("로그인 정보가 틀렸습니다.")
-            }
+    fun login(){
+        if(isLoginInfoValid()){//로그인 정보가 모두 맞는 경우
+            goToMainScreen()
+            finish()
+        }else{
+            showToast("로그인 정보가 틀렸습니다.")
         }
     }
 
