@@ -8,21 +8,33 @@ import com.example.presentation.base.BaseActivity
 import com.example.presentation.databinding.ActivitySplashBinding
 import com.example.local.PreferenceManager
 import com.example.util.const.Const
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class SplashActivity:BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {
     override fun ActivitySplashBinding.onCreate() {
+        checkUserAlreadyLogin()
+    }
 
-        val isUserAlreadyLogined = PreferenceManager.getPreference(this@SplashActivity,
-          Const.PARAM_IS_LOGIN_SUCCESS,false) as Boolean
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            if(isUserAlreadyLogined){
-                goToMainScreen()
-            }else{
-                goToLoginScreen()
+    private fun checkUserAlreadyLogin(){
+        Observable.timer(2,TimeUnit.SECONDS)
+            .map {
+                PreferenceManager.getPreference(this@SplashActivity,
+                    Const.PARAM_IS_LOGIN_SUCCESS,false) as Boolean
             }
-            finish()
-        }, 2000)//2초뒤에 로그인 화면으로
+            .observeOn(Schedulers.io())
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe { isUserAlreadyLogin ->
+                if(isUserAlreadyLogin){
+                    goToMainScreen()
+                }else{
+                    goToLoginScreen()
+                }
+                finish()
+            }.addToDisposable()
     }
 
 
