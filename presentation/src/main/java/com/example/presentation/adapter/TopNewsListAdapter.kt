@@ -21,11 +21,11 @@ class TopNewsListAdapter:ListAdapter<ArticlePresentationDataModel, TopNewArticle
                 R.layout.item_news_list,
                 parent,
                 false)
-        return TopNewArticleViewHolder(binding).apply {
-            this.binding.root.setOnClickListener {
-                itemClickListener.onTopNewItemClick(article = currentList[bindingAdapterPosition])
-            }
-        }
+        return TopNewArticleViewHolder(binding,this)
+    }
+
+    fun clickPosition(position:Int){
+        itemClickListener.onTopNewItemClick(article = currentList[position])
     }
 
     //아이템 클릭

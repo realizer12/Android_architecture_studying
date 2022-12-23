@@ -7,6 +7,14 @@
     <data>
 
         <variable
+            name="adapter"
+            type="com.example.presentation.adapter.TopNewsListAdapter" />
+
+        <variable
+            name="bindingAdapterPosition"
+            type="int" />
+
+        <variable
             name="articleData"
             type="com.example.presentation.model.ArticlePresentationDataModel" />
 
@@ -23,6 +31,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
+        android:onClick="@{()-> adapter.clickPosition(bindingAdapterPosition)}"
         android:background="@drawable/all_line_stroke"
         android:paddingBottom="10dp">
 
