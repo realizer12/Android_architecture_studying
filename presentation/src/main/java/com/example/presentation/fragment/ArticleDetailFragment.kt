@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -46,11 +47,8 @@ class ArticleDetailFragment :
     }
 
 
-    private val articleDetailViewModel: ArticleDetailViewModel by lazy {
-        ViewModelProvider(
-            owner = this,
-            factory = StateHandleViewModelFactory(repository = topNewsRepository)
-        )[ArticleDetailViewModel::class.java]
+    private val articleDetailViewModel: ArticleDetailViewModel by viewModels {
+        StateHandleViewModelFactory(repository = topNewsRepository)
     }
 
 

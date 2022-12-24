@@ -64,6 +64,11 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
     implementation "com.jakewharton.rxbinding4:rxbinding:4.0.0"
 
+    //android ktx -> 확장 및 고차 기능과 같은 기능을 활용하여, kotlin 보다 관용적으로 만드는 것을 목표
+    implementation 'androidx.fragment:fragment-ktx:1.2.5'
+    implementation 'androidx.activity:activity-ktx:1.1.0'
+
+
     //glide 추가
     def glide_version = "4.13.0"
     implementation "com.github.bumptech.glide:glide:$glide_version"
