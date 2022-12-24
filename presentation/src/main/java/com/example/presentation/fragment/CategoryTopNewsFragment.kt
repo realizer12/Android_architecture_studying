@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -48,11 +49,8 @@ class CategoryTopNewsFragment : BaseFragment<FragmentCategoryTopNewsBinding>(R.l
     }
 
 
-    private val categoryTopNewsViewModel: CategoryTopNewsViewModel by lazy {
-        ViewModelProvider(
-            owner = this,
-            factory = StateHandleViewModelFactory(repository = topNewsRepository)
-        )[CategoryTopNewsViewModel::class.java]
+    private val categoryTopNewsViewModel: CategoryTopNewsViewModel by viewModels {
+        StateHandleViewModelFactory(repository = topNewsRepository)
     }
 
 

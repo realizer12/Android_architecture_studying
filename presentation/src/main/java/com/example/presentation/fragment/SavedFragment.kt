@@ -2,6 +2,7 @@ package com.example.presentation.fragment
 
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -41,11 +42,8 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
         TopNewsRepositoryImpl(topNewsRemoteDataSource, savedNewsLocalDataSource)
     }
 
-    private val savedViewModel: SavedViewModel by lazy {
-        ViewModelProvider(
-            owner = this,
-            factory = ViewModelFactory(repository = topNewsRepository)
-        )[SavedViewModel::class.java]
+    private val savedViewModel: SavedViewModel by viewModels{
+        ViewModelFactory(repository = topNewsRepository)
     }
 
 

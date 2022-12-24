@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -47,11 +48,8 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
         TopNewsRepositoryImpl(topNewsRemoteDataSource, topNewsLocalDataSource)
     }
 
-    private val topNewsViewModel: TopNewsViewModel by lazy {
-        ViewModelProvider(
-            owner = this,
-            factory = ViewModelFactory(repository = topNewsRepository)
-        )[TopNewsViewModel::class.java]
+    private val topNewsViewModel: TopNewsViewModel by viewModels {
+        ViewModelFactory(repository = topNewsRepository)
     }
 
     override fun FragmentTopNewsBinding.onCreateView() {
