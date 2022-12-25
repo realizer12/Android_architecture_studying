@@ -6,8 +6,10 @@ import com.example.local.mapper.ArticleListLocalMapper
 import com.example.local.mapper.ArticleLocalMapper
 import com.example.local.model.ArticleLocalDataModel
 import com.example.local.room.LocalDataBase
+import com.example.local.room.NewsArticleDao
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import javax.inject.Inject
 
 /**
  * Date: 2022/10/30
@@ -16,24 +18,24 @@ import io.reactivex.rxjava3.core.Single
  * Content: 저장한 게시글 가져오는  datasource의  실제  구현체 부분
  *
  * **/
-class SavedNewsLocalDataSourceImpl(
-    private val localDataBase: LocalDataBase
+class SavedNewsLocalDataSourceImpl @Inject constructor(
+    private val newsArticleDao: NewsArticleDao
 ) : SavedNewsLocalDataSource,
     ArticleListLocalMapper<List<ArticleLocalDataModel>, List<ArticleDataModel>>,
     ArticleLocalMapper<ArticleLocalDataModel, ArticleDataModel> {
 
     override fun getSavedArticleList(): Single<List<ArticleDataModel>> {
-        return localDataBase.getNewsArticleDao().loadSavedNewsArticles().map {
+        return newsArticleDao.loadSavedNewsArticles().map {
             it.toArticleListData()
         }
     }
 
     override fun saveArticle(article: ArticleDataModel): Completable {
-        return localDataBase.getNewsArticleDao().setSavedArticle(article.fromArticleData())
+        return newsArticleDao.setSavedArticle(article.fromArticleData())
     }
 
     override fun removeArticle(article: ArticleDataModel): Completable {
-        return localDataBase.getNewsArticleDao().deleteSavedArticle(
+        return newsArticleDao.deleteSavedArticle(
             publishedAt = article.fromArticleData().publishedAt.toString(),
             title = article.fromArticleData().title.toString(),
             url = article.fromArticleData().url.toString()
