@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 
 /**
@@ -15,8 +16,10 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object RemoteModule {
-    //top news 전용  Remote 데이터 소스를 제공한다.
+
+   //top news 전용  Remote 데이터 소스를 제공한다.
     @Provides
+    @Singleton
     fun provideTopNewsRemoteDataSource(
         apiService: ApiService
     ): TopNewsRemoteDataSource = TopNewsRemoteDataSourceImpl(apiService = apiService)

@@ -13,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 /**
  * network 통신 곤련 설정 처리를 Hilt를 사용하여, 의존성 주입 한다.
@@ -24,6 +25,7 @@ object NetworkModule {
 
     //api service 제공하기
     @Provides
+    @Singleton
     fun provideApiService(
         retrofit: Retrofit
     ):ApiService =
@@ -32,6 +34,7 @@ object NetworkModule {
 
     //Retrofit 설정 적용
     @Provides
+    @Singleton
     fun provideRetrofit(
         okHttpClient: OkHttpClient
     ): Retrofit = Retrofit.Builder()
@@ -43,6 +46,7 @@ object NetworkModule {
 
     //okhttp client 의존성 주입
     @Provides
+    @Singleton
     fun provideOkhttpClient(
         networkInterceptor: Interceptor
     ): OkHttpClient = OkHttpClient.Builder()
@@ -53,6 +57,7 @@ object NetworkModule {
 
     //network interceptor 의존성 주입
     @Provides
+    @Singleton
     fun provideNetworkInterceptor(): Interceptor =
         Interceptor { chain ->
             val requestWithHeader =

@@ -6,8 +6,9 @@ import com.example.data.source.local.news.SavedNewsLocalDataSource
 import com.example.data.source.remote.news.TopNewsRemoteDataSource
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import javax.inject.Inject
 
-class TopNewsRepositoryImpl(
+class TopNewsRepositoryImpl @Inject constructor(
     private val topNewsRemoteDataSource: TopNewsRemoteDataSource,
     private val savedNewsLocalDataSource: SavedNewsLocalDataSource
 ) : TopNewsRepository {
