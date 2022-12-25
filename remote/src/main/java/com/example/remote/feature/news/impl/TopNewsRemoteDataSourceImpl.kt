@@ -7,14 +7,16 @@ import com.example.remote.mapper.ArticleRemoteMapper
 import com.example.remote.mapper.BaseModelRemoteMapper
 import com.example.remote.model.ArticleRemoteDataModel
 import com.example.remote.model.BaseRemoteDataModel
-import com.example.remote.retrofit.RetrofitHelper
+import com.example.remote.retrofit.ApiService
 import com.example.util.const.Const
 import io.reactivex.rxjava3.core.Single
+import javax.inject.Inject
 
 
 //실세  topnewremote datasource의 구현체
-class TopNewsRemoteDataSourceImpl(private val retrofitHelper: RetrofitHelper) :
-    TopNewsRemoteDataSource,
+class TopNewsRemoteDataSourceImpl @Inject constructor(
+    private val apiService: ApiService
+) : TopNewsRemoteDataSource,
     BaseModelRemoteMapper<BaseRemoteDataModel<ArticleRemoteDataModel>, BaseDataModel<ArticleDataModel>>,
     ArticleRemoteMapper<ArticleRemoteDataModel, ArticleDataModel> {
 
@@ -23,7 +25,7 @@ class TopNewsRemoteDataSourceImpl(private val retrofitHelper: RetrofitHelper) :
         page: Int,
         pageSize: Int
     ): Single<BaseDataModel<ArticleDataModel>> {
-        return retrofitHelper.apiService.getTopHeadLines(
+        return apiService.getTopHeadLines(
             page = page,
             category = category,
             pageSize = Const.PageSize

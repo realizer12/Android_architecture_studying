@@ -3,9 +3,7 @@ package com.example.presentation.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -27,7 +25,6 @@ import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.TopNewsViewModel
 import com.example.presentation.viewmodel.factory.ViewModelFactory
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
-import com.example.remote.retrofit.RetrofitHelper
 
 class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_top_news) {
 

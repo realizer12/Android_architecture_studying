@@ -6,7 +6,6 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -21,14 +20,12 @@ import com.example.presentation.activity.MainActivity
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentCategoryTopNewsBinding
-import com.example.presentation.databinding.FragmentTopNewsBinding
 import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.SingleEventObserver
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.CategoryTopNewsViewModel
 import com.example.presentation.viewmodel.factory.StateHandleViewModelFactory
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
-import com.example.remote.retrofit.RetrofitHelper
 import com.example.util.const.Const
 import com.example.util.const.Const.PARAM_ARTICLE_MODEL
 
