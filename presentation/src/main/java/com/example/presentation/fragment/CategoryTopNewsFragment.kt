@@ -11,10 +11,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.repository.news.TopNewsRepository
-import com.example.data.repository.news.TopNewsRepositoryImpl
-import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
-import com.example.local.room.LocalDataBase
 import com.example.presentation.R
 import com.example.presentation.activity.MainActivity
 import com.example.presentation.adapter.TopNewsListAdapter
@@ -24,11 +20,11 @@ import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.SingleEventObserver
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.CategoryTopNewsViewModel
-import com.example.presentation.viewmodel.factory.StateHandleViewModelFactory
-import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.util.const.Const
 import com.example.util.const.Const.PARAM_ARTICLE_MODEL
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryTopNewsFragment : BaseFragment<FragmentCategoryTopNewsBinding>(R.layout.fragment_category_top_news) {
 
     //네비게이션 컨트롤러
@@ -37,18 +33,7 @@ class CategoryTopNewsFragment : BaseFragment<FragmentCategoryTopNewsBinding>(R.l
     private var rcyScrollLState: Parcelable? = null
     lateinit var topNewsListAdapter: TopNewsListAdapter
 
-    //reposotory 구성 해줌.
-    private val topNewsRepository: TopNewsRepository by lazy {
-        val topNewsRemoteDataSource = TopNewsRemoteDataSourceImpl(RetrofitHelper)
-        val savedNewsLocalDataSource =
-            SavedNewsLocalDataSourceImpl(LocalDataBase.getInstance(requireActivity()))
-        TopNewsRepositoryImpl(topNewsRemoteDataSource, savedNewsLocalDataSource)
-    }
-
-
-    private val categoryTopNewsViewModel: CategoryTopNewsViewModel by viewModels {
-        StateHandleViewModelFactory(repository = topNewsRepository)
-    }
+    private val categoryTopNewsViewModel: CategoryTopNewsViewModel by viewModels()
 
 
     //화면실행시 맨처음에는 navigation 실행시 option으로 줬던  enter 애니메이션을 시작하고,

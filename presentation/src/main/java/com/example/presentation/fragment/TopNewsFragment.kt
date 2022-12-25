@@ -9,10 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.repository.news.TopNewsRepository
-import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.local.PreferenceManager
-import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
 import com.example.local.room.LocalDataBase
 import com.example.presentation.R
 import com.example.presentation.activity.SplashActivity
@@ -23,9 +20,9 @@ import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.SingleEventObserver
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.TopNewsViewModel
-import com.example.presentation.viewmodel.factory.ViewModelFactory
-import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_top_news) {
 
     lateinit var topNewsListAdapter: TopNewsListAdapter
@@ -36,18 +33,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     private lateinit var navController: NavController
     private lateinit var navHost: NavHostFragment
 
-    //reposotory 구성 해줌.
-    private val topNewsRepository: TopNewsRepository by lazy {
-        val topNewsRemoteDataSource = TopNewsRemoteDataSourceImpl(RetrofitHelper)
-        val topNewsLocalDataSource = SavedNewsLocalDataSourceImpl(
-            LocalDataBase.getInstance(requireActivity().applicationContext)
-        )
-        TopNewsRepositoryImpl(topNewsRemoteDataSource, topNewsLocalDataSource)
-    }
-
-    private val topNewsViewModel: TopNewsViewModel by viewModels {
-        ViewModelFactory(repository = topNewsRepository)
-    }
+    private val topNewsViewModel: TopNewsViewModel by viewModels()
 
     override fun FragmentTopNewsBinding.onCreateView() {
         initSet()

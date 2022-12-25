@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
     id 'kotlin-parcelize'
 }
 def localProperties = new Properties()
@@ -59,12 +60,10 @@ dependencies {
 
 
     //di hilt 적용
-    def hilt_version = "2.40.1"
+    def hilt_version = "2.44"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0'
-    annotationProcessor 'androidx.hilt:hilt-compiler:1.0.0'
+
 
     //Rxjava 추가
     implementation "io.reactivex.rxjava3:rxjava:3.1.2"

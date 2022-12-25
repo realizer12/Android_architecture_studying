@@ -9,13 +9,16 @@ import com.example.presentation.base.BaseViewModel
 import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Event
 import com.example.util.const.Const
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
 /**
  * 게시글 상세화면용 뷰모델
  **/
-class ArticleDetailViewModel(
+@HiltViewModel
+class ArticleDetailViewModel @Inject constructor(
     private val topNewsRepository: TopNewsRepository,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {

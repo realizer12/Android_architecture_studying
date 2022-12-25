@@ -6,13 +6,16 @@ import com.example.data.repository.news.TopNewsRepository
 import com.example.presentation.base.BaseViewModel
 import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
 /**
  * save fragment의 뷰모델
  **/
-class SavedViewModel(
+@HiltViewModel
+class SavedViewModel @Inject constructor(
     private val topNewsRepository: TopNewsRepository
 ) : BaseViewModel() {
 

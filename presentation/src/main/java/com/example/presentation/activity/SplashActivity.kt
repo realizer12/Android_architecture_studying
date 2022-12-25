@@ -1,17 +1,14 @@
 package com.example.presentation.activity
 
 import android.content.Intent
-import android.os.Looper
-import android.os.Handler
+import com.example.local.PreferenceManager
 import com.example.presentation.R
 import com.example.presentation.base.BaseActivity
 import com.example.presentation.databinding.ActivitySplashBinding
-import com.example.local.PreferenceManager
 import com.example.util.const.Const
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class SplashActivity:BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {

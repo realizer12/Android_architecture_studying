@@ -7,10 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.repository.news.TopNewsRepository
-import com.example.data.repository.news.TopNewsRepositoryImpl
-import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
-import com.example.local.room.LocalDataBase
 import com.example.presentation.R
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.base.BaseFragment
@@ -19,10 +15,10 @@ import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.SingleEventObserver
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.SavedViewModel
-import com.example.presentation.viewmodel.factory.ViewModelFactory
-import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.util.const.Const
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) {
 
     //네비게이션 컨트롤러
@@ -32,17 +28,7 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
     private var rcyScrollLState: Parcelable? = null
     lateinit var topNewsListAdapter: TopNewsListAdapter
 
-    //respository 가져옴
-    private val topNewsRepository: TopNewsRepository by lazy {
-        val topNewsRemoteDataSource = TopNewsRemoteDataSourceImpl(RetrofitHelper)
-        val savedNewsLocalDataSource =
-            SavedNewsLocalDataSourceImpl(LocalDataBase.getInstance(requireActivity()))
-        TopNewsRepositoryImpl(topNewsRemoteDataSource, savedNewsLocalDataSource)
-    }
-
-    private val savedViewModel: SavedViewModel by viewModels{
-        ViewModelFactory(repository = topNewsRepository)
-    }
+    private val savedViewModel: SavedViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

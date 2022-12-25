@@ -19,7 +19,9 @@ import com.example.presentation.viewmodel.ArticleDetailViewModel
 import com.example.presentation.viewmodel.factory.StateHandleViewModelFactory
 import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.util.const.Const
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ArticleDetailFragment :
     BaseFragment<FragmentArticleDetailBinding>(R.layout.fragment_article_detail) {
 
@@ -32,20 +34,7 @@ class ArticleDetailFragment :
         getDataFromVm()
     }
 
-    //respository 가져옴
-    private val topNewsRepository: TopNewsRepository by lazy {
-        val topNewsRemoteDataSource = TopNewsRemoteDataSourceImpl(RetrofitHelper)
-        val savedNewsLocalDataSource =
-            SavedNewsLocalDataSourceImpl(LocalDataBase.getInstance(requireActivity()))
-        TopNewsRepositoryImpl(topNewsRemoteDataSource, savedNewsLocalDataSource)
-    }
-
-
-    private val articleDetailViewModel: ArticleDetailViewModel by viewModels {
-        StateHandleViewModelFactory(repository = topNewsRepository)
-    }
-
-
+    private val articleDetailViewModel: ArticleDetailViewModel by viewModels()
 
     //화면실행시 맨처음에는 navigation 실행시 option으로 줬던  enter 애니메이션을 시작하고,
     //그외에는 stationay를 주어 enteranimation을 없애준다.-> 계속 메인 탭 이동시  이미 navigate된 fragment가 기존 설정한
