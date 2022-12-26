@@ -1,13 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
-    id 'kotlin-parcelize'
 }
 
 android {
-    namespace 'com.example.data'
+    namespace 'com.realize.android.domain'
     compileSdk 32
 
     defaultConfig {
@@ -25,8 +22,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = '11'
@@ -34,24 +31,6 @@ android {
 }
 
 dependencies {
-    implementation project(':util')
-
-    //매핑 코드 들어가기전까지만 
-    def room_version = "2.4.3"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-rxjava3:$room_version"
-
-    //di hilt 적용
-    def hilt_version = "2.44"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-
-
-    //Rxjava 추가
-    implementation "io.reactivex.rxjava3:rxjava:3.1.2"
-    implementation "io.reactivex.rxjava3:rxkotlin:3.0.1"
-    implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
