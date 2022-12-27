@@ -1,6 +1,6 @@
-package com.example.data.repository.news
+package com.realize.android.domain.repository
 
-import com.example.data.model.ArticleDataModel
+import com.realize.android.domain.entity.ArticleDataEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
@@ -20,10 +20,10 @@ interface TopNewsRepository {
         category: String? = null,//optional
         page:Int,
         pageSize:Int
-    ): Single<List<ArticleDataModel>>
+    ): Single<List<ArticleDataEntity>>
 
-    fun getSavedArticleList():Single<List<ArticleDataModel>>
+    fun getSavedArticleList():Single<List<ArticleDataEntity>>
 
-    fun saveArticle(article: ArticleDataModel):Completable
-    fun removeArticle(article: ArticleDataModel):Completable
+    fun saveArticle(article: ArticleDataEntity):Completable
+    fun removeArticle(article: ArticleDataEntity):Completable
 }

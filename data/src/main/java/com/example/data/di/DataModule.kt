@@ -1,6 +1,6 @@
 package com.example.data.di
 
-import com.example.data.repository.news.TopNewsRepository
+import com.realize.android.domain.repository.TopNewsRepository
 import com.example.data.repository.news.TopNewsRepositoryImpl
 import com.example.data.source.local.news.SavedNewsLocalDataSource
 import com.example.data.source.remote.news.TopNewsRemoteDataSource

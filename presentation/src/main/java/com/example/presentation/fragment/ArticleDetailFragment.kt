@@ -6,18 +6,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.example.data.repository.news.TopNewsRepository
-import com.example.data.repository.news.TopNewsRepositoryImpl
-import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
-import com.example.local.room.LocalDataBase
 import com.example.presentation.R
 import com.example.presentation.activity.MainActivity
 import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentArticleDetailBinding
 import com.example.presentation.util.SingleEventObserver
 import com.example.presentation.viewmodel.ArticleDetailViewModel
-import com.example.presentation.viewmodel.factory.StateHandleViewModelFactory
-import com.example.remote.feature.news.impl.TopNewsRemoteDataSourceImpl
 import com.example.util.const.Const
 import dagger.hilt.android.AndroidEntryPoint
 

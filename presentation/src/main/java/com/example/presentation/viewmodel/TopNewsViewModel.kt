@@ -2,14 +2,13 @@ package com.example.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.data.repository.news.TopNewsRepository
 import com.example.presentation.base.BaseViewModel
 import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Event
 import com.example.util.const.Const.PageSize
+import com.realize.android.domain.usecase.GetTopHeadLinesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -17,7 +16,7 @@ import javax.inject.Inject
  **/
 @HiltViewModel
 class TopNewsViewModel @Inject constructor(
-    private val topNewsRepository: TopNewsRepository
+    private val getTopHeadLinesUseCase: GetTopHeadLinesUseCase
 ) : BaseViewModel() {
 
     private var isPagingFinish = false
@@ -40,17 +39,15 @@ class TopNewsViewModel @Inject constructor(
             return
         }
 
-        topNewsRepository.getTopHeadLines(page = page, pageSize = PageSize)
-            .subscribeOn(Schedulers.io())
+        getTopHeadLinesUseCase(page = page, pageSize = PageSize)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ newArticleList ->
                 if (newArticleList.isNullOrEmpty()) {
                     isPagingFinish = true
                     return@subscribe
                 }
-
-                page++
-                tempTopNewsList.addAll(newArticleList.map { it.fromArticleData() })
+                 page++
+                 tempTopNewsList.addAll(newArticleList.map { it.fromArticleEntity() })
                 _topNewsListData.value = tempTopNewsList.map { it.copy() }
             }, {
                 _errorToast.value = Event(it)

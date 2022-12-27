@@ -3,7 +3,7 @@ package com.example.presentation.viewmodel.factory
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.data.repository.news.TopNewsRepository
+import com.realize.android.domain.repository.TopNewsRepository
 import com.example.presentation.viewmodel.ArticleDetailViewModel
 import com.example.presentation.viewmodel.CategoryTopNewsViewModel
 

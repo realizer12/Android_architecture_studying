@@ -1,16 +1,18 @@
 package com.example.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.example.data.repository.news.TopNewsRepository
 import com.example.presentation.base.BaseViewModel
 import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Event
 import com.example.util.const.Const
+import com.realize.android.domain.usecase.GetTopHeadLinesUseCase
+import com.realize.android.domain.usecase.RemoveArticleUseCase
+import com.realize.android.domain.usecase.SaveArticleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -19,7 +21,9 @@ import javax.inject.Inject
  **/
 @HiltViewModel
 class ArticleDetailViewModel @Inject constructor(
-    private val topNewsRepository: TopNewsRepository,
+    private val saveArticleUseCase: SaveArticleUseCase,
+    private val removeArticleUseCase: RemoveArticleUseCase,
+    private val getTopHeadLinesUseCase: GetTopHeadLinesUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -47,8 +51,7 @@ class ArticleDetailViewModel @Inject constructor(
     //저장한 article 인지 여부를 체크 한다.
     fun checkSavedArticle() {
         //저장 여부 체크
-        topNewsRepository.getSavedArticleList()
-            .subscribeOn(Schedulers.io())
+        getTopHeadLinesUseCase(fromLocal = true)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ saveArticleList ->
                 _isSaveArticle.value = saveArticleList.any { it.title == detailArticleModel?.title && it.publishedAt == detailArticleModel?.publishedAt && it.url == detailArticleModel?.url }
@@ -60,28 +63,19 @@ class ArticleDetailViewModel @Inject constructor(
 
     //게시글 저장 취소
     fun unSaveArticle() {
-        if (detailArticleModel == null) {
-            return
-        }
-        topNewsRepository.removeArticle(article = detailArticleModel.toArticleData())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _isSaveArticle.value = false
-            }, {
-                _errorToast.value = Event(it)
-            })
+        removeArticleUseCase(
+            article = detailArticleModel?.toArticleEntity()
+        ).subscribe({
+            _isSaveArticle.value = false
+        }, {
+            _errorToast.value = Event(it)
+        })
     }
 
 
     //게시물 저장
     fun saveArticle() {
-        if (detailArticleModel == null) {
-            return
-        }
-        topNewsRepository.saveArticle(article = detailArticleModel.toArticleData())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        saveArticleUseCase(article = detailArticleModel?.toArticleEntity())
             .subscribe({
                 _isSaveArticle.value = true
             }, {

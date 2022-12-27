@@ -3,7 +3,7 @@ package com.example.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.example.data.repository.news.TopNewsRepository
+import com.realize.android.domain.repository.TopNewsRepository
 import com.example.presentation.base.BaseViewModel
 import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Event
