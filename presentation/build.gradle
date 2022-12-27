@@ -46,6 +46,7 @@ dependencies {
     //모듈 의존성 주입
     implementation project(':remote')
     implementation project(':local')
+    implementation project(':domain')
     implementation project(':data')
     implementation project(':util')
 
