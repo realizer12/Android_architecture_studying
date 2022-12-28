@@ -9,6 +9,7 @@ import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Event
 import com.example.util.const.Const
 import com.example.util.const.Const.PageSize
+import com.realize.android.domain.usecase.GetTopHeadLinesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -19,7 +20,7 @@ import javax.inject.Inject
  **/
 @HiltViewModel
 class CategoryTopNewsViewModel @Inject constructor(
-    private val topNewsRepository: TopNewsRepository,
+    private val getTopHeadLinesUseCase: GetTopHeadLinesUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -42,39 +43,27 @@ class CategoryTopNewsViewModel @Inject constructor(
 
     //탑 카테고리 뉴스 리스트 가져오기
     fun getCategoryTopNewsList() {
-
-        //카테고리가 없을떄 early 리턴을 시켜준다.
-        if(categoryString.isNullOrEmpty()){
-            _errorToast.value = Event(Throwable("카테고리가 없어요 ㅠㅠ"))
-            return
-        }
-
         //페이징 끝났을때  리턴해줌.
         if (isPagingFinish) {
             return
         }
-
-        //카테고리별 topnews 리스트를 가져오낟.
-        topNewsRepository.getTopHeadLines(
+        getTopHeadLinesUseCase(
+            fromCategoryTopModel = true,
             page = page,
             pageSize = PageSize,
             category = categoryString
-        )
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ newArticleList ->
+        ).subscribe({ newArticleList ->
+            if (newArticleList.isNullOrEmpty()) {
+                isPagingFinish = true
+                return@subscribe
+            }
+            page++
+            tempCategoryTopNewList.addAll(newArticleList.map { it.fromArticleEntity() })
+            _categoryTopNewsListData.value = tempCategoryTopNewList.map { it.copy() }
+        }, {
+            _errorToast.value = Event(it)
+        }).addDisposable()
 
-                if (newArticleList.isNullOrEmpty()) {
-                    isPagingFinish = true
-                    return@subscribe
-                }
-                page++
-                tempCategoryTopNewList.addAll(newArticleList.map { it.fromArticleData() })
-                _categoryTopNewsListData.value = tempCategoryTopNewList.map { it.copy() }
-
-            }, {
-                _errorToast.value = Event(it)
-            }).addDisposable()
     }
 
 

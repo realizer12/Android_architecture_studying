@@ -13,18 +13,26 @@ class GetTopHeadLinesUseCase @Inject constructor(
 
     operator fun invoke(
         fromLocal: Boolean = false,
+        fromCategoryTopModel:Boolean = false,
         category: String? = null,//optional
         page: Int? = null,
         pageSize: Int? = null
     ): Single<List<ArticleDataEntity>> {
-        if(page == null || pageSize == null){
-            throw Exception("page or page size null")
+
+        if(fromCategoryTopModel && category.isNullOrEmpty()){
+            throw Exception("카테고리가 없어요")
         }
+
         return if (fromLocal) {
             topNewsRepository.getSavedArticleList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
         } else {
+
+            if(page == null || pageSize == null){
+                throw Exception("page or page size null")
+            }
+
             topNewsRepository.getTopHeadLines(category, page, pageSize)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
