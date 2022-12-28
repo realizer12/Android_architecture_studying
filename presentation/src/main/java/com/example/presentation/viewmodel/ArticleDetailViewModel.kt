@@ -21,7 +21,6 @@ import javax.inject.Inject
 class ArticleDetailViewModel @Inject constructor(
     private val saveArticleUseCase: SaveArticleUseCase,
     private val removeArticleUseCase: RemoveArticleUseCase,
-    private val getTopHeadLinesUseCase: GetTopHeadLinesUseCase,
     private val checkSavedArticleUseCase: CheckSavedArticleUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
