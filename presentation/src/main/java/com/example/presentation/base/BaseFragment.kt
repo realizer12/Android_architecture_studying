@@ -9,14 +9,10 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.example.data.model.ArticleDataModel
-import com.example.presentation.mapper.ArticlePresentationMapper
-import com.example.presentation.model.ArticlePresentationDataModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 
-open class BaseFragment<VDB:ViewDataBinding>(@LayoutRes val layoutRes: Int):Fragment(),
-    ArticlePresentationMapper<ArticlePresentationDataModel,ArticleDataModel > {
+open class BaseFragment<VDB:ViewDataBinding>(@LayoutRes val layoutRes: Int):Fragment(){
 
     private val compositeDisposable= CompositeDisposable()
 
@@ -40,18 +36,6 @@ open class BaseFragment<VDB:ViewDataBinding>(@LayoutRes val layoutRes: Int):Frag
 
     fun Disposable.addToDisposable(){
         compositeDisposable.add(this)
-    }
-
-    override fun ArticleDataModel.fromArticleData(): ArticlePresentationDataModel {
-        return  ArticlePresentationDataModel(
-            author, content, description, publishedAt, title, url, urlToImage
-        )
-    }
-
-    override fun ArticlePresentationDataModel.toArticleData(): ArticleDataModel {
-        return ArticleDataModel(
-            author, content, description, publishedAt, title, url, urlToImage
-        )
     }
 
     override fun onDestroyView() {
