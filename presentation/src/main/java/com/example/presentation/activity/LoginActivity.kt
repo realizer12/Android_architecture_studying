@@ -11,7 +11,10 @@ import com.example.local.PreferenceManager
 
 class LoginActivity:BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
 
-    override fun ActivityLoginBinding.onCreate() {}
+    override fun ActivityLoginBinding.onCreate() {
+        binding.loginActivity = this@LoginActivity
+        binding.lifecycleOwner = this@LoginActivity
+    }
 
     fun login(){
         if(isLoginInfoValid()){//로그인 정보가 모두 맞는 경우
