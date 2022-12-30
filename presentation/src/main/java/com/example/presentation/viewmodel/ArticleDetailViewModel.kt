@@ -55,7 +55,7 @@ class ArticleDetailViewModel @Inject constructor(
                 _isSaveArticle.value = it
             }, {
                 _errorToast.value = Event(it)
-            })
+            }).addDisposable()
     }
 
 
@@ -67,7 +67,7 @@ class ArticleDetailViewModel @Inject constructor(
             _isSaveArticle.value = false
         }, {
             _errorToast.value = Event(it)
-        })
+        }).addDisposable()
     }
 
 
@@ -78,6 +78,6 @@ class ArticleDetailViewModel @Inject constructor(
                 _isSaveArticle.value = true
             }, {
                 _errorToast.value = Event(it)
-            })
+            }).addDisposable()
     }
 }

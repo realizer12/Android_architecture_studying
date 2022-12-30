@@ -27,7 +27,7 @@ class SavedViewModel @Inject constructor(
                 _savedTopNewsList.value = articles.map { it.fromArticleEntity() }
             }, {
                 _errorToast.value = Event(it)
-            })
+            }).addDisposable()
     }
 
 

@@ -40,7 +40,6 @@ class TopNewsViewModel @Inject constructor(
         }
 
         getTopHeadLinesUseCase(page = page, pageSize = PageSize)
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ newArticleList ->
                 if (newArticleList.isNullOrEmpty()) {
                     isPagingFinish = true
