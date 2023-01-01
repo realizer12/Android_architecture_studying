@@ -2,7 +2,7 @@ package com.example.data.repository.news
 
 import com.example.data.mapper.ArticleListDataMapper
 import com.example.data.model.ArticleDataModel
-import com.example.data.source.local.news.SavedNewsLocalDataSource
+import com.example.data.source.local.news.TopNewsLocalDataSource
 import com.example.data.source.remote.news.TopNewsRemoteDataSource
 import com.realize.android.domain.entity.ArticleDataEntity
 import com.realize.android.domain.repository.TopNewsRepository
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class TopNewsRepositoryImpl @Inject constructor(
     private val topNewsRemoteDataSource: TopNewsRemoteDataSource,
-    private val savedNewsLocalDataSource: SavedNewsLocalDataSource
+    private val savedNewsLocalDataSource: TopNewsLocalDataSource
 ) : TopNewsRepository, ArticleListDataMapper<ArticleDataModel, ArticleDataEntity> {
     override fun getTopHeadLines(
         category: String?,

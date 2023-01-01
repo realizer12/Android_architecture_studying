@@ -2,7 +2,7 @@ package com.example.data.di
 
 import com.realize.android.domain.repository.TopNewsRepository
 import com.example.data.repository.news.TopNewsRepositoryImpl
-import com.example.data.source.local.news.SavedNewsLocalDataSource
+import com.example.data.source.local.news.TopNewsLocalDataSource
 import com.example.data.source.remote.news.TopNewsRemoteDataSource
 import dagger.Module
 import dagger.Provides
@@ -20,7 +20,7 @@ object DataModule {
     @Provides
     @Singleton
     fun provideTopNewsRepository(
-        savedNewsLocalDataSource: SavedNewsLocalDataSource,
+        savedNewsLocalDataSource: TopNewsLocalDataSource,
         topNewsRemoteDataSource: TopNewsRemoteDataSource
     ): TopNewsRepository = TopNewsRepositoryImpl(topNewsRemoteDataSource, savedNewsLocalDataSource)
 

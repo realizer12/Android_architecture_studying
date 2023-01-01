@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.core.Single
  * @see removeArticle 로컬 룸에 게시글을 삭제한다.
  *
  * **/
-interface SavedNewsLocalDataSource {
+interface TopNewsLocalDataSource {
     fun getSavedArticleList(): Single<List<ArticleDataModel>>
     fun saveArticle(article: ArticleDataModel): Completable
     fun removeArticle(article: ArticleDataModel): Completable

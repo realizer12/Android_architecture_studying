@@ -1,11 +1,10 @@
 package com.example.local.feature.news.impl
 
 import com.example.data.model.ArticleDataModel
-import com.example.data.source.local.news.SavedNewsLocalDataSource
+import com.example.data.source.local.news.TopNewsLocalDataSource
 import com.example.local.mapper.ArticleListLocalMapper
 import com.example.local.mapper.ArticleLocalMapper
 import com.example.local.model.ArticleLocalDataModel
-import com.example.local.room.LocalDataBase
 import com.example.local.room.NewsArticleDao
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -18,9 +17,9 @@ import javax.inject.Inject
  * Content: 저장한 게시글 가져오는  datasource의  실제  구현체 부분
  *
  * **/
-class SavedNewsLocalDataSourceImpl @Inject constructor(
+class TopNewsLocalDataSourceImpl @Inject constructor(
     private val newsArticleDao: NewsArticleDao
-) : SavedNewsLocalDataSource,
+) : TopNewsLocalDataSource,
     ArticleListLocalMapper<List<ArticleLocalDataModel>, List<ArticleDataModel>>,
     ArticleLocalMapper<ArticleLocalDataModel, ArticleDataModel> {
 

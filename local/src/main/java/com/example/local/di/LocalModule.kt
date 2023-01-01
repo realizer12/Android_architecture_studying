@@ -1,7 +1,7 @@
 package com.example.local.di
 
-import com.example.data.source.local.news.SavedNewsLocalDataSource
-import com.example.local.feature.news.impl.SavedNewsLocalDataSourceImpl
+import com.example.data.source.local.news.TopNewsLocalDataSource
+import com.example.local.feature.news.impl.TopNewsLocalDataSourceImpl
 import com.example.local.room.NewsArticleDao
 import dagger.Module
 import dagger.Provides
@@ -21,7 +21,7 @@ object LocalModule {
     @Singleton
     fun provideSavedNewsLocalDataSource(
         newsArticleDao: NewsArticleDao
-    ):SavedNewsLocalDataSource = SavedNewsLocalDataSourceImpl(newsArticleDao)
+    ):TopNewsLocalDataSource = TopNewsLocalDataSourceImpl(newsArticleDao)
 
 
 }
