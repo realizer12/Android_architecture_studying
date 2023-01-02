@@ -1,7 +1,10 @@
 package com.example.local.di
 
+import android.content.SharedPreferences
 import com.example.data.source.local.news.TopNewsLocalDataSource
+import com.example.data.source.local.news.UserInfoLocalDataSource
 import com.example.local.feature.news.impl.TopNewsLocalDataSourceImpl
+import com.example.local.feature.news.impl.UserInfoLocalDataSourceImpl
 import com.example.local.room.NewsArticleDao
 import dagger.Module
 import dagger.Provides
@@ -23,5 +26,10 @@ object LocalModule {
         newsArticleDao: NewsArticleDao
     ):TopNewsLocalDataSource = TopNewsLocalDataSourceImpl(newsArticleDao)
 
+    @Provides
+    @Singleton
+    fun provideUserInfoLocalDataSource(
+        preferences: SharedPreferences
+    ):UserInfoLocalDataSource = UserInfoLocalDataSourceImpl(preferences)
 
 }
