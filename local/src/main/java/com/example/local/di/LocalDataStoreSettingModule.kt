@@ -2,9 +2,11 @@ package com.example.local.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.example.local.room.LocalDataBase
 import com.example.local.room.NewsArticleDao
-import com.example.local.util.Const
+import com.example.local.util.Const.GLOBAL_PREFERENCE_NAME
+import com.example.local.util.Const.PARAM_IS_LOGIN_ID
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,19 +21,35 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object LocalDataStoreSettingModule {
 
+    @Provides
+    @Singleton
+    fun provideRoomDataBase(
+        @ApplicationContext context: Context,
+        preferences: SharedPreferences
+    ): LocalDataBase {
+        return Room.databaseBuilder(
+            context.applicationContext,
+            LocalDataBase::class.java,
+            "${preferences.getString(PARAM_IS_LOGIN_ID, "")
+            }_local-database.db"
+        ).fallbackToDestructiveMigration()
+            .build()
+    }
+
+
     //news artricle dao 의존성 주입
     @Provides
     @Singleton
     fun provideNewsArticleDao(
-        @ApplicationContext context: Context
-    ) :NewsArticleDao = LocalDataBase.getInstance(context = context).getNewsArticleDao()
+        localDataBase: LocalDataBase
+    ) :NewsArticleDao = localDataBase.getNewsArticleDao()
 
     @Provides
     @Singleton
     fun provideSharedPreference(
         @ApplicationContext context: Context
     ):SharedPreferences = context.getSharedPreferences(
-        Const.GLOBAL_PREFERENCE_NAME,
+        GLOBAL_PREFERENCE_NAME,
         Context.MODE_PRIVATE
     )
 
