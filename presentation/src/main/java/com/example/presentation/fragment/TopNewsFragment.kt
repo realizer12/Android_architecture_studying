@@ -61,7 +61,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
 
     //로그아웃 처리
     fun logout() {
-        PreferenceManager.removeAllPreference(requireActivity())//로그인 체크 값 다 지워줌.
+        topNewsViewModel.logoutProcess()
         startActivity(Intent(requireActivity(), SplashActivity::class.java))
         requireActivity().finish()
     }

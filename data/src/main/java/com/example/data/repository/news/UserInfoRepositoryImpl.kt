@@ -18,4 +18,8 @@ class UserInfoRepositoryImpl @Inject constructor(
     override fun getLoginStatus(): Boolean {
        return userInfoLocalDataSource.getLoginStatus()
     }
+
+    override fun removeAllSharedPreference() {
+        userInfoLocalDataSource.removeAllSharedPreference()
+    }
 }

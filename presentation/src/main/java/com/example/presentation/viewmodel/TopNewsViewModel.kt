@@ -7,6 +7,7 @@ import com.example.presentation.model.ArticlePresentationDataModel
 import com.example.presentation.util.Event
 import com.example.util.const.Const.PageSize
 import com.realize.android.domain.usecase.GetTopHeadLinesUseCase
+import com.realize.android.domain.usecase.RemoveSharedPreferenceDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Inject
  **/
 @HiltViewModel
 class TopNewsViewModel @Inject constructor(
-    private val getTopHeadLinesUseCase: GetTopHeadLinesUseCase
+    private val getTopHeadLinesUseCase: GetTopHeadLinesUseCase,
+    private val removeSharedPreferenceDataUseCase: RemoveSharedPreferenceDataUseCase
 ) : BaseViewModel() {
 
     private var isPagingFinish = false
@@ -29,6 +31,10 @@ class TopNewsViewModel @Inject constructor(
 
     init {
         getTopNewList()
+    }
+
+    fun logoutProcess(){
+        removeSharedPreferenceDataUseCase.invoke()
     }
 
     //탑 뉴스 리스트 가져오기

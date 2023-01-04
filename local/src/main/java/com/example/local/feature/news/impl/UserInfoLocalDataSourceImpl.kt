@@ -29,4 +29,10 @@ class UserInfoLocalDataSourceImpl @Inject constructor(
         }
     }
 
+    override fun removeAllSharedPreference() {
+        preferences.edit {
+              this.clear()
+        }
+    }
+
 }
