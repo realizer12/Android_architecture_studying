@@ -1,39 +1,28 @@
 package com.example.presentation.activity
 
 import android.content.Intent
+import androidx.activity.viewModels
 import com.example.local.PreferenceManager
 import com.example.presentation.R
 import com.example.presentation.base.BaseActivity
 import com.example.presentation.databinding.ActivitySplashBinding
+import com.example.presentation.util.SingleEventObserver
+import com.example.presentation.viewmodel.SplashViewModel
 import com.example.util.const.Const
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
+@AndroidEntryPoint
 class SplashActivity:BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {
+
+    private val splashViewModel:SplashViewModel by viewModels()
+
     override fun ActivitySplashBinding.onCreate() {
-        checkUserAlreadyLogin()
+        getDataFromVm()
     }
-
-    private fun checkUserAlreadyLogin(){
-        Observable.timer(2,TimeUnit.SECONDS)
-            .map {
-                PreferenceManager.getPreference(this@SplashActivity,
-                    Const.PARAM_IS_LOGIN_SUCCESS,false) as Boolean
-            }
-            .observeOn(Schedulers.io())
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe { isUserAlreadyLogin ->
-                if(isUserAlreadyLogin){
-                    goToMainScreen()
-                }else{
-                    goToLoginScreen()
-                }
-                finish()
-            }.addToDisposable()
-    }
-
 
     // 로그인 화면으로 가기
     private fun goToLoginScreen(){
@@ -44,4 +33,23 @@ class SplashActivity:BaseActivity<ActivitySplashBinding>(R.layout.activity_splas
     private fun goToMainScreen(){
         startActivity(Intent(this, MainActivity::class.java))
     }
+
+    private fun getDataFromVm(){
+        splashViewModel.errorToast.observe(this,SingleEventObserver{
+            showToast(it.message.toString())
+        })
+
+        splashViewModel.loginStatus.observe(this) { isUserAlreadyLogin ->
+            if(isUserAlreadyLogin){
+                goToMainScreen()
+            }else{
+                goToLoginScreen()
+            }
+            finish()
+        }
+
+    }
+
+
+
 }

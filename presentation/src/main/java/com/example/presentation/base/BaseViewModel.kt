@@ -14,7 +14,7 @@ import io.reactivex.rxjava3.kotlin.addTo
 /**
  * 베이스가 되는 뷰모델이다. 
 **/
-open class BaseViewModel:ViewModel(),
+abstract class BaseViewModel:ViewModel(),
     ArticlePresentationMapper1<ArticlePresentationDataModel,ArticleDataEntity>
 {
     private val compositeDisposable = CompositeDisposable()

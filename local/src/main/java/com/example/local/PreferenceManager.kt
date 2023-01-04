@@ -10,7 +10,7 @@ class PreferenceManager {
         fun setPreference(context: Context, key: String, value: Any) {
             try {
                 val preferences =
-                    context.getSharedPreferences("pref", Context.MODE_PRIVATE)
+                    context.getSharedPreferences("global_preference", Context.MODE_PRIVATE)
                 val editor = preferences.edit()
                 when (value) {
                     is String -> editor.putString(key, value)//value값 string 일떄
