@@ -1,6 +1,7 @@
 package com.example.local
 
 import android.content.Context
+import com.example.util.const.Const
 import com.google.gson.Gson
 
 class PreferenceManager {
@@ -38,7 +39,7 @@ class PreferenceManager {
         ): Any? {
             return try {
                 val preferences =
-                    context.getSharedPreferences("pref", Context.MODE_PRIVATE)
+                    context.getSharedPreferences(com.example.local.util.Const.GLOBAL_PREFERENCE_NAME, Context.MODE_PRIVATE)
                 when (defaultValue) {
                     is String -> preferences.getString(key, defaultValue)
                     is Int -> preferences.getInt(key, defaultValue)
@@ -72,7 +73,7 @@ class PreferenceManager {
         fun removeAllPreference(context: Context) {
             try {
                 val preferences =
-                    context.getSharedPreferences("pref", Context.MODE_PRIVATE)
+                    context.getSharedPreferences(com.example.local.util.Const.GLOBAL_PREFERENCE_NAME, Context.MODE_PRIVATE)
                 val editor = preferences.edit()
                 editor.clear()//전체 preference value clear
                 editor.apply()
