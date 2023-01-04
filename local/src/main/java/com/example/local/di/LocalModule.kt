@@ -21,7 +21,6 @@ object LocalModule {
 
 
     @Provides
-    @Singleton
     fun provideSavedNewsLocalDataSource(
         newsArticleDao: NewsArticleDao
     ):TopNewsLocalDataSource = TopNewsLocalDataSourceImpl(newsArticleDao)

@@ -22,7 +22,6 @@ import javax.inject.Singleton
 object LocalDataStoreSettingModule {
 
     @Provides
-    @Singleton
     fun provideRoomDataBase(
         @ApplicationContext context: Context,
         preferences: SharedPreferences
@@ -39,7 +38,6 @@ object LocalDataStoreSettingModule {
 
     //news artricle dao 의존성 주입
     @Provides
-    @Singleton
     fun provideNewsArticleDao(
         localDataBase: LocalDataBase
     ) :NewsArticleDao = localDataBase.getNewsArticleDao()

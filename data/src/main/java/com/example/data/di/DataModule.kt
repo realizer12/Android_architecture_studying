@@ -20,8 +20,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DataModule {
 
+    //이거는 계속해서 바뀌어야 되므로, singletone을  안함.
     @Provides
-    @Singleton
     fun provideTopNewsRepository(
         savedNewsLocalDataSource: TopNewsLocalDataSource,
         topNewsRemoteDataSource: TopNewsRemoteDataSource
