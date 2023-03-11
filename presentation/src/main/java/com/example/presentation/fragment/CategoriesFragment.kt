@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.presentation.R
-import com.example.base.base.BaseFragment
+import com.example.base.base.fragment.BaseFragment
 import com.example.util.const.Const
 import com.example.presentation.databinding.FragmentCategoriesBinding
 import com.example.presentation.enum.Category

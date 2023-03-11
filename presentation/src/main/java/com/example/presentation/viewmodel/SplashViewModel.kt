@@ -2,8 +2,8 @@ package com.example.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.base.base.BaseViewModel
-import com.example.base.base.Event
+import com.example.base.base.viewmodel.BaseViewModel
+import com.example.base.base.util.Event
 import com.realize.android.domain.usecase.GetUserLoginStatusUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

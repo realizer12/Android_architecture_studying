@@ -1,6 +1,6 @@
 package com.example.presentation.viewmodel
 
-import com.example.base.base.BaseViewModel
+import com.example.base.base.viewmodel.BaseViewModel
 import com.realize.android.domain.usecase.SetUserLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

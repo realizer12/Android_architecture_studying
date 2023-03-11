@@ -2,10 +2,10 @@ package com.example.presentation.activity
 
 import android.content.Intent
 import androidx.activity.viewModels
-import com.example.base.base.BaseActivity
+import com.example.base.base.activity.BaseActivity
 import com.example.presentation.R
 import com.example.presentation.databinding.ActivitySplashBinding
-import com.example.base.base.SingleEventObserver
+import com.example.base.base.util.SingleEventObserver
 import com.example.presentation.viewmodel.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

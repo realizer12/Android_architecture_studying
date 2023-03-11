@@ -11,12 +11,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.base.base.fragment.BaseFragment
 import com.example.presentation.R
 import com.example.presentation.activity.MainActivity
 import com.example.presentation.adapter.TopNewsListAdapter
 import com.example.presentation.databinding.FragmentCategoryTopNewsBinding
 import com.example.presentation.model.ArticlePresentationDataModel
-import com.example.base.base.SingleEventObserver
+import com.example.base.base.util.SingleEventObserver
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.CategoryTopNewsViewModel
 import com.example.util.const.Const
@@ -24,7 +25,7 @@ import com.example.util.const.Const.PARAM_ARTICLE_MODEL
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CategoryTopNewsFragment : com.example.base.base.BaseFragment<FragmentCategoryTopNewsBinding>(R.layout.fragment_category_top_news) {
+class CategoryTopNewsFragment : BaseFragment<FragmentCategoryTopNewsBinding>(R.layout.fragment_category_top_news) {
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController
