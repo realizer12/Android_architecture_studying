@@ -2,14 +2,14 @@ package com.example.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.presentation.base.BaseViewModel
+import com.example.base.base.BaseViewModel
 import com.example.presentation.model.ArticlePresentationDataModel
-import com.example.presentation.util.Event
+import com.example.base.base.Event
+import com.example.presentation.model.ArticlePresentationDataModel.Companion.fromArticleEntity
 import com.example.util.const.Const.PageSize
 import com.realize.android.domain.usecase.GetTopHeadLinesUseCase
 import com.realize.android.domain.usecase.RemoveSharedPreferenceDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 /**

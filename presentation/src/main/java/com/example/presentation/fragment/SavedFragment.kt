@@ -7,12 +7,12 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.base.base.BaseFragment
 import com.example.presentation.R
 import com.example.presentation.adapter.TopNewsListAdapter
-import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentSavedBinding
 import com.example.presentation.model.ArticlePresentationDataModel
-import com.example.presentation.util.SingleEventObserver
+import com.example.base.base.SingleEventObserver
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.SavedViewModel
 import com.example.util.const.Const
@@ -92,7 +92,7 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
 
 
     private fun getDataFromVm() {
-        savedViewModel.errorToast.observe(viewLifecycleOwner,SingleEventObserver{
+        savedViewModel.errorToast.observe(viewLifecycleOwner, SingleEventObserver{
             showToast(it.message.toString())
         })
     }

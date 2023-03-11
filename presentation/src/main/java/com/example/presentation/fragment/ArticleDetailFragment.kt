@@ -6,11 +6,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.example.base.base.BaseFragment
 import com.example.presentation.R
 import com.example.presentation.activity.MainActivity
-import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentArticleDetailBinding
-import com.example.presentation.util.SingleEventObserver
+import com.example.base.base.SingleEventObserver
 import com.example.presentation.viewmodel.ArticleDetailViewModel
 import com.example.util.const.Const
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,7 +60,7 @@ class ArticleDetailFragment :
     private fun getDataFromVm(){
 
         //에러가 나왔을떄
-        articleDetailViewModel.errorToast.observe(viewLifecycleOwner,SingleEventObserver{
+        articleDetailViewModel.errorToast.observe(viewLifecycleOwner, SingleEventObserver{
             showToast(it.message.toString())
         })
 

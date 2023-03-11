@@ -1,6 +1,8 @@
 package com.example.presentation.model
 
 import android.os.Parcelable
+import com.example.presentation.mapper.ArticlePresentationMapper
+import com.realize.android.domain.entity.ArticleDataEntity
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -15,4 +17,17 @@ data class ArticlePresentationDataModel(
     val title: String? = null,
     val url: String? = null,
     val urlToImage: String? = null,
-): Parcelable
+): Parcelable{
+    companion object : ArticlePresentationMapper<ArticlePresentationDataModel, ArticleDataEntity>{
+        override fun ArticlePresentationDataModel.toArticleEntity(): ArticleDataEntity {
+            return  ArticleDataEntity(
+                author, content, description, publishedAt, title, url, urlToImage
+            )
+        }
+        override fun ArticleDataEntity.fromArticleEntity(): ArticlePresentationDataModel {
+            return ArticlePresentationDataModel(
+                author, content, description, publishedAt, title, url, urlToImage
+            )
+        }
+    }
+}

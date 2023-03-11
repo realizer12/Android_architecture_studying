@@ -9,15 +9,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.local.PreferenceManager
-import com.example.local.room.LocalDataBase
+import com.example.base.base.BaseFragment
 import com.example.presentation.R
 import com.example.presentation.activity.SplashActivity
 import com.example.presentation.adapter.TopNewsListAdapter
-import com.example.presentation.base.BaseFragment
 import com.example.presentation.databinding.FragmentTopNewsBinding
 import com.example.presentation.model.ArticlePresentationDataModel
-import com.example.presentation.util.SingleEventObserver
+import com.example.base.base.SingleEventObserver
 import com.example.presentation.util.Util.navigateWithAnim
 import com.example.presentation.viewmodel.TopNewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -105,7 +103,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
     private fun getDataFromVm() {
 
         //에러가 나왔을떄
-        topNewsViewModel.errorToast.observe(viewLifecycleOwner,SingleEventObserver{
+        topNewsViewModel.errorToast.observe(viewLifecycleOwner, SingleEventObserver{
             showToast(it.message.toString())
         })
 

@@ -19,7 +19,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object LocalModule {
 
-
     @Provides
     fun provideSavedNewsLocalDataSource(
         newsArticleDao: NewsArticleDao

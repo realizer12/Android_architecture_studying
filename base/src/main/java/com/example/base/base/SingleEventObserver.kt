@@ -1,4 +1,4 @@
-package com.example.presentation.util
+package com.example.base.base
 
 import androidx.lifecycle.Observer
 class SingleEventObserver <T>(private val onEventUnhandledContent: (T) -> Unit) :

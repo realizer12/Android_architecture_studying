@@ -1,6 +1,6 @@
 package com.example.presentation.viewmodel
 
-import com.example.presentation.base.BaseViewModel
+import com.example.base.base.BaseViewModel
 import com.realize.android.domain.usecase.SetUserLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val setUserLoginUseCase: SetUserLoginUseCase
-):BaseViewModel() {
+): BaseViewModel() {
 
     fun setUserLogin(loginUserId:String?){
         setUserLoginUseCase(loginId = loginUserId)

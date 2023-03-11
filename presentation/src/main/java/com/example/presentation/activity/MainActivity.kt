@@ -5,7 +5,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.presentation.R
-import com.example.presentation.base.BaseActivity
+import com.example.base.base.BaseActivity
 import com.example.presentation.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

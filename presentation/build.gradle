@@ -44,6 +44,7 @@ android {
 dependencies {
 
     //모듈 의존성 주입
+    implementation project(':base')
     implementation project(':remote')
     implementation project(':local')
     implementation project(':domain')

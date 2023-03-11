@@ -7,13 +7,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.presentation.R
-import com.example.presentation.base.BaseFragment
+import com.example.base.base.BaseFragment
 import com.example.util.const.Const
 import com.example.presentation.databinding.FragmentCategoriesBinding
 import com.example.presentation.enum.Category
 import com.example.presentation.util.Util.navigateWithAnim
 
-class CategoriesFragment:BaseFragment<FragmentCategoriesBinding>(R.layout.fragment_categories) {
+class CategoriesFragment: BaseFragment<FragmentCategoriesBinding>(R.layout.fragment_categories) {
 
     //네비게이션 컨트롤러
     private lateinit var navController: NavController

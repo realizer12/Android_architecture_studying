@@ -3,7 +3,7 @@ package com.example.presentation.activity
 import android.content.Intent
 import androidx.activity.viewModels
 import com.example.presentation.R
-import com.example.presentation.base.BaseActivity
+import com.example.base.base.BaseActivity
 import com.example.util.const.Const.PARAM_IS_LOGIN_ID
 import com.example.util.const.Const.PARAM_IS_LOGIN_SUCCESS
 import com.example.presentation.databinding.ActivityLoginBinding
@@ -13,7 +13,7 @@ import com.example.presentation.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginActivity:BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
+class LoginActivity: BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
 
     //로그인 화면 뷰모델
     private val loginViewModel:LoginViewModel by viewModels()
