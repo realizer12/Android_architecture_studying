@@ -1,4 +1,4 @@
-package com.example.presentation.enum
+package com.example.presentation.enums
 
 enum class MockUser(val userID:String,val password:String) {
     TESTER(userID = "tester", password = "1234"),

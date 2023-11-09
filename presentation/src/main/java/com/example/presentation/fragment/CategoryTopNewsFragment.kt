@@ -27,9 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CategoryTopNewsFragment : BaseFragment<FragmentCategoryTopNewsBinding>(R.layout.fragment_category_top_news) {
 
-    //네비게이션 컨트롤러
-    private lateinit var navController: NavController
-    private lateinit var navHost: NavHostFragment
+
     private var rcyScrollLState: Parcelable? = null
     lateinit var topNewsListAdapter: TopNewsListAdapter
 
@@ -68,10 +66,6 @@ class CategoryTopNewsFragment : BaseFragment<FragmentCategoryTopNewsBinding>(R.l
     private fun initSet() {
         setToolbar()
 
-        navHost =
-            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHost.findNavController()
-
         binding.categoryTopNewsListener = this
         binding.lifecycleOwner = viewLifecycleOwner
         binding.categoryTopNewsViewModel = categoryTopNewsViewModel
@@ -91,7 +85,7 @@ class CategoryTopNewsFragment : BaseFragment<FragmentCategoryTopNewsBinding>(R.l
         topNewsListAdapter.setOnTopNewsItemClickListener(object :
             TopNewsListAdapter.ItemClickListener {
             override fun onTopNewItemClick(article: ArticlePresentationDataModel) {
-                navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
+                findNavController().navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
                     putParcelable(PARAM_ARTICLE_MODEL, article)//닉네임 보냄
                 })
             }

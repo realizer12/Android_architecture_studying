@@ -27,10 +27,6 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
 
     private var rcyScrollLState: Parcelable? = null
 
-    //네비게이션 컨트롤러
-    private lateinit var navController: NavController
-    private lateinit var navHost: NavHostFragment
-
     private val topNewsViewModel: TopNewsViewModel by viewModels()
 
     override fun FragmentTopNewsBinding.onCreateView() {
@@ -41,9 +37,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
 
     private fun initSet() {
 
-        navHost =
-            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHost.findNavController()
+
 
         binding.topNewsListener = this
         binding.lifecycleOwner = viewLifecycleOwner
@@ -69,7 +63,7 @@ class TopNewsFragment : BaseFragment<FragmentTopNewsBinding>(R.layout.fragment_t
         topNewsListAdapter.setOnTopNewsItemClickListener(object :
             TopNewsListAdapter.ItemClickListener {
             override fun onTopNewItemClick(article: ArticlePresentationDataModel) {
-                navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
+                findNavController().navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
                     putParcelable(com.example.util.const.Const.PARAM_ARTICLE_MODEL, article)//닉네임 보냄
                 })
             }

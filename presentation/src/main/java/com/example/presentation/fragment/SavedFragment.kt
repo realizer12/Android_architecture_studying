@@ -21,10 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved) {
 
-    //네비게이션 컨트롤러
-    private lateinit var navController: NavController
-    private lateinit var navHost: NavHostFragment
-
     private var rcyScrollLState: Parcelable? = null
     lateinit var topNewsListAdapter: TopNewsListAdapter
 
@@ -46,9 +42,6 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
 
     private fun initSet() {
 
-        navHost =
-            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHost.findNavController()
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.savedViewModel = savedViewModel
@@ -66,7 +59,7 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(R.layout.fragment_saved
         topNewsListAdapter.setOnTopNewsItemClickListener(object :
             TopNewsListAdapter.ItemClickListener {
             override fun onTopNewItemClick(article: ArticlePresentationDataModel) {
-                navController.navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
+                findNavController().navigateWithAnim(R.id.articleDetailFragment, Bundle().apply {
                     putParcelable(Const.PARAM_ARTICLE_MODEL, article)//닉네임 보냄
                 })
             }

@@ -5,7 +5,7 @@ import androidx.activity.viewModels
 import com.example.presentation.R
 import com.example.base.base.activity.BaseActivity
 import com.example.presentation.databinding.ActivityLoginBinding
-import com.example.presentation.enum.MockUser
+import com.example.presentation.enums.MockUser
 import com.example.presentation.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

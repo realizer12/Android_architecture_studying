@@ -1,4 +1,4 @@
-package com.example.presentation.enum
+package com.example.presentation.enums
 
 import com.example.presentation.R
 

@@ -30,7 +30,6 @@
                 android:id="@+id/iv_back_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:onClick="@{()-> parentActivity.navController.popBackStack()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_title"
                 app:layout_constraintStart_toStartOf="parent"

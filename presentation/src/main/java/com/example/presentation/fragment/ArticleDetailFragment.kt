@@ -19,10 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class ArticleDetailFragment :
     BaseFragment<FragmentArticleDetailBinding>(R.layout.fragment_article_detail) {
 
-    //네비게이션 컨트롤러
-    private lateinit var navController: NavController
-    private lateinit var navHost: NavHostFragment
-
     override fun FragmentArticleDetailBinding.onCreateView() {
         initSet()
         getDataFromVm()
@@ -44,10 +40,6 @@ class ArticleDetailFragment :
     }
 
     private fun initSet() {
-
-        navHost =
-            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHost.findNavController()
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vmArticleDetail = articleDetailViewModel

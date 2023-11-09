@@ -8,7 +8,23 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+typealias DefaultFragmentId = Int
+
 object Util {
+
+
+    fun Pair<DefaultFragmentId,NavController>.isNavigationHasBackStack(): Boolean {
+        //현재 navigation currentdestination이 메인 바텀 메뉴 3개중 하나리면, false를 리턴한다.
+        return when (this.second.currentDestination?.id) {
+            this.first -> {
+                false
+            }
+            else -> {
+                true
+            }
+        }
+    }
 
     //시간 얼마나 지났는지를 체크
     fun String.checkTimePassed():String{
